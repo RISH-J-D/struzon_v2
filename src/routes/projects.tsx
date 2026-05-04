@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { ExternalLink, Layers, Zap, X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useContent } from "@/lib/ContentContext";
+import { ImageAutoSlider } from "./image-auto-slider";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -200,8 +201,8 @@ function ProjectsPage() {
                           <span className="block text-[8px] md:text-[9px] uppercase font-bold text-slate-400 mb-4 tracking-[0.2em]">Sub Pictures / Gallery</span>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                             {project.gallery.map((img, i) => (
-                              <div 
-                                key={i} 
+                              <div
+                                key={i}
                                 className="aspect-square bg-slate-100 overflow-hidden cursor-pointer border border-slate-200 hover:border-brand-red transition-colors"
                                 onClick={() => setActiveGalleryImg(img)}
                               >
@@ -245,17 +246,17 @@ function ProjectsPage() {
               className="fixed inset-0 z-[100] bg-navy/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12"
               onClick={() => setActiveGalleryImg(null)}
             >
-              <button 
+              <button
                 className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors"
                 onClick={() => setActiveGalleryImg(null)}
               >
                 <X size={32} />
               </button>
-              <motion.img 
+              <motion.img
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                src={activeGalleryImg} 
+                src={activeGalleryImg}
                 className="max-w-full max-h-full object-contain shadow-2xl border border-white/10"
                 onClick={(e) => e.stopPropagation()}
               />
@@ -263,10 +264,7 @@ function ProjectsPage() {
           )}
         </AnimatePresence>
 
-        <div className="mt-16 md:mt-24 text-center opacity-20 relative z-10 px-4">
-          <div className="text-[12vw] md:text-[10vw] font-display font-black uppercase text-navy leading-none">Perspective</div>
-          <p className="text-[8px] md:text-[10px] font-mono uppercase tracking-[0.5em] md:tracking-[1em] text-navy mt-4">Struzon Technical Archive</p>
-        </div>
+        <ImageAutoSlider />
       </section>
 
       <section className="bg-navy text-white py-16 md:py-24 relative overflow-hidden">

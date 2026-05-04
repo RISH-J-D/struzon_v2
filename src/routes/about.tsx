@@ -4,6 +4,8 @@ import { PageShell, PageHero } from "@/components/PageShell";
 import { ShieldCheck, Zap, Target, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import Masonry from "@/components/OfficeGallery";
+import { supabase } from "@/lib/supabase";
+import { useState, useEffect } from "react";
 
 // ASSETS
 import imgP1 from "@/assets/project-1.jpg";
@@ -185,6 +187,28 @@ function SuccessTimeline() {
 
 function About() {
   const { content } = useContent();
+  const [galleryItems, setGalleryItems] = useState(officeGalleryItems);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      const { data } = await supabase
+        .from('galleries')
+        .select('*')
+        .eq('gallery_name', 'OfficeGallery')
+        .order('created_at', { ascending: false });
+      
+      if (data && data.length > 0) {
+        const formatted = data.map(item => ({
+          id: item.id,
+          img: item.image_url,
+          url: "#",
+          height: [400, 500, 600, 700, 800][Math.floor(Math.random() * 5)]
+        }));
+        setGalleryItems(formatted);
+      }
+    };
+    fetchGallery();
+  }, []);
 
   return (
     <PageShell>
@@ -302,7 +326,7 @@ function About() {
 
           <div className="relative w-full overflow-visible">
             <Masonry
-              items={officeGalleryItems}
+              items={galleryItems}
               duration={0.8}
               scaleOnHover={true}
               hoverScale={0.97}
