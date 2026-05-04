@@ -43,17 +43,17 @@ export default function LicensedPartners() {
     <div ref={containerRef} className="mt-8 pt-8 border-t border-navy/5 px-4 w-full">
       <div className="text-xl md:text-2xl uppercase tracking-[0.5em] text-brand-red font-black mb-8 text-center">Licensed Partners</div>
 
-      <div className="flex flex-col md:flex-row flex-nowrap justify-center items-center gap-12 md:gap-16 lg:gap-24 overflow-x-hidden md:overflow-visible">
+      <div className="flex flex-row md:flex-row flex-nowrap items-center justify-start md:justify-center gap-10 md:gap-16 lg:gap-24 overflow-x-auto md:overflow-visible pb-8 scrollbar-hide px-4">
         {partners.map((p) => (
           <div key={p.name} className="partner-logo group flex flex-col items-center gap-4 flex-shrink-0">
-            <div className="relative w-44 sm:w-52 lg:w-60 aspect-video flex items-center justify-center">
+            <div className="relative w-32 sm:w-44 lg:w-60 aspect-video flex items-center justify-center">
               <img
                 src={p.img}
                 alt={p.name}
                 className="w-full h-full object-contain transition-all duration-700 drop-shadow-xl group-hover:drop-shadow-2xl group-hover:scale-110"
               />
             </div>
-            <span className="text-sm md:text-base font-black uppercase tracking-[0.2em] text-navy/50 group-hover:text-brand-red transition-colors duration-500 text-center whitespace-nowrap">
+            <span className="text-[10px] md:text-sm lg:text-base font-black uppercase tracking-[0.2em] text-navy/50 group-hover:text-brand-red transition-colors duration-500 text-center whitespace-nowrap">
               {p.name}
             </span>
           </div>

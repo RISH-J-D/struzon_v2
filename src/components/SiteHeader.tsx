@@ -54,32 +54,32 @@ export function SiteHeader() {
         <AnimatePresence>
           {!scrolled && (
             <motion.div 
-              initial={{ height: 50, opacity: 1 }}
+              initial={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               className="w-full bg-white border-b border-navy/5 overflow-hidden"
             >
-              <div className="w-full h-full flex items-center justify-between px-8 md:px-12 text-[14px] font-bold uppercase tracking-wider text-navy">
-                <div className="flex gap-10 items-center">
-                  <a href="mailto:info@struzon.com" className="flex items-center gap-3 hover:text-brand-red transition-colors group">
-                    <Mail size={16} className="text-brand-red" />
+              <div className="w-full min-h-[50px] flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-2 md:py-0 text-[11px] sm:text-[13px] md:text-[14px] font-bold uppercase tracking-wider text-navy gap-3 md:gap-0">
+                <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6 md:gap-10 items-center">
+                  <a href="mailto:info@struzon.com" className="flex items-center gap-2 sm:gap-3 hover:text-brand-red transition-colors group">
+                    <Mail size={14} className="text-brand-red md:w-4 md:h-4" />
                     <span>info@struzon.com</span>
                   </a>
-                  <div className="w-px h-4 bg-navy/10" />
-                  <a href="tel:+16469923825" className="flex items-center gap-3 hover:text-brand-red transition-colors group">
-                    <Phone size={16} className="text-brand-red" />
-                    <span>+1 (646) 992-3825</span>
+                  <div className="hidden sm:block w-px h-4 bg-navy/10" />
+                  <a href="tel:+16469923825" className="flex items-center gap-2 sm:gap-3 hover:text-brand-red transition-colors group">
+                    <Phone size={14} className="text-brand-red md:w-4 md:h-4" />
+                    <span className="whitespace-nowrap">+1 (646) 992-3825</span>
                   </a>
-                  <div className="w-px h-4 bg-navy/10" />
-                  <a href="tel:+916385828777" className="flex items-center gap-3 hover:text-brand-red transition-colors group">
-                    <Phone size={16} className="text-brand-red" />
-                    <span>+91 6385828777</span>
+                  <div className="hidden lg:block w-px h-4 bg-navy/10" />
+                  <a href="tel:+916385828777" className="flex items-center gap-2 sm:gap-3 hover:text-brand-red transition-colors group">
+                    <Phone size={14} className="text-brand-red md:w-4 md:h-4" />
+                    <span className="whitespace-nowrap">+91 6385828777</span>
                   </a>
                 </div>
-                <div className="flex gap-8 items-center">
-                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaFacebookF size={18} /></a>
-                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaLinkedinIn size={18} /></a>
-                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaInstagram size={18} /></a>
-                   <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaYoutube size={20} /></a>
+                <div className="flex gap-6 sm:gap-8 items-center">
+                   <a href="https://www.facebook.com/people/Struzon-Technologies/100057060415643/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaFacebookF size={16} /></a>
+                   <a href="https://www.linkedin.com/company/struzon-technologies/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaLinkedinIn size={16} /></a>
+                   <a href="https://www.instagram.com/struzontechnologies?igsh=MWp0c2w1emdkbjQ3Mw==" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaInstagram size={16} /></a>
+                   <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaYoutube size={18} /></a>
                 </div>
               </div>
             </motion.div>
@@ -89,32 +89,32 @@ export function SiteHeader() {
         {/* Main Nav Section */}
         <motion.div 
           style={{ paddingLeft: headerPadding, paddingRight: headerPadding }}
-          className="flex-1 w-full flex items-center justify-between px-8 md:px-12"
+          className="flex-1 w-full flex items-center justify-between px-4 md:px-12 gap-4"
         >
           {/* Logo & Certifications */}
-          <div className="flex items-center gap-8">
-            <Link to="/">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-8 min-w-0">
+            <Link to="/" className="shrink-0">
               <motion.img 
                 style={{ scale: logoScale }}
                 src={logo} 
                 alt="Struzon" 
-                className="h-16 w-auto object-contain"
+                className="h-10 sm:h-12 md:h-16 w-auto object-contain"
               />
             </Link>
-            <div className="hidden lg:flex items-center gap-5 border-l border-navy/10 pl-8 py-2">
-              <motion.img whileHover={{ y: -5 }} src={badge1} className="h-16 w-auto transition-all cursor-pointer" title="AISC" />
-              <motion.img whileHover={{ y: -5 }} src={badge2} className="h-16 w-auto transition-all cursor-pointer" title="NISD" />
-              <motion.img whileHover={{ y: -5 }} src={badge3} className="h-12 w-auto transition-all cursor-pointer" title="ISO" />
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-5 border-l border-navy/10 pl-3 md:pl-8 py-1 md:py-2">
+              <motion.img whileHover={{ y: -5 }} src={badge1} className="h-8 sm:h-10 md:h-16 w-auto transition-all cursor-pointer" title="AISC" />
+              <motion.img whileHover={{ y: -5 }} src={badge2} className="h-8 sm:h-10 md:h-16 w-auto transition-all cursor-pointer" title="NISD" />
+              <motion.img whileHover={{ y: -5 }} src={badge3} className="h-6 sm:h-8 md:h-12 w-auto transition-all cursor-pointer" title="ISO" />
             </div>
           </div>
 
           {/* Desktop Links */}
-          <nav className="hidden min-[1200px]:flex items-center gap-2 relative mx-4">
+          <nav className="hidden min-[1250px]:flex items-center gap-2 relative mx-4 shrink-0">
             {links.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="relative px-6 py-2 text-[14px] uppercase tracking-wider font-bold text-navy/70 group"
+                className="relative px-5 py-2 text-[14px] uppercase tracking-wider font-bold text-navy/70 group whitespace-nowrap"
                 activeProps={{ className: "active-nav-link" }}
               >
                 {({ isActive }) => (
@@ -212,9 +212,9 @@ export function SiteHeader() {
                     Get a Free Quote
                   </Link>
                   <div className="mt-10 flex gap-6 text-white/40">
-                    <a href="#" target="_blank" rel="noopener noreferrer"><FaFacebookF size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
-                    <a href="#" target="_blank" rel="noopener noreferrer"><FaLinkedinIn size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
-                    <a href="#" target="_blank" rel="noopener noreferrer"><FaInstagram size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                    <a href="https://www.facebook.com/people/Struzon-Technologies/100057060415643/" target="_blank" rel="noopener noreferrer"><FaFacebookF size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                    <a href="https://www.linkedin.com/company/struzon-technologies/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                    <a href="https://www.instagram.com/struzontechnologies?igsh=MWp0c2w1emdkbjQ3Mw==" target="_blank" rel="noopener noreferrer"><FaInstagram size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
                     <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer"><FaYoutube size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
                   </div>
                 </div>
