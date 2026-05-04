@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone, Mail, ChevronRight } from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from "react-icons/fa6";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 // Import assets for reliable production URL resolution
 import logoImg from "@/assets/struzon-logo.png";
@@ -30,122 +30,133 @@ export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Scroll animations
+  const headerHeight = useTransform(scrollY, [0, 100], ["150px", "100px"]);
+  const headerPadding = useTransform(scrollY, [0, 100], ["50px", "25px"]);
+  const logoScale = useTransform(scrollY, [0, 100], [1, 0.85]);
 
   useEffect(() => {
     setMounted(true);
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setIsOpen(false);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[1000] flex flex-col transition-all duration-500 bg-gradient-to-b from-navy/95 via-navy/60 to-white/5 backdrop-blur-2xl`}>
-
-        {/* Top Bar Section — Merged and full width */}
-        <div className={`w-full transition-all duration-500 overflow-hidden ${scrolled ? 'h-0' : 'h-10'}`}>
-
-
-          <div className="flex w-full items-center justify-between px-4 md:px-8 lg:px-12 h-full">
-            <div className="flex items-center gap-6 text-[10px] md:text-sm font-bold uppercase tracking-wider">
-              <div className="flex flex-row items-center gap-6">
-                <a href="tel:+16469923825" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors whitespace-nowrap">
-                  <Phone size={12} className="text-brand-red" /> +1 (646) 992-3825
-                </a>
-                <a href="tel:+916385828777" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors whitespace-nowrap border-l border-white/10 pl-6 h-3 flex items-center">
-                  <Phone size={12} className="text-brand-red" /> +91 6385828777
-                </a>
+      <motion.header 
+        style={{ height: headerHeight }}
+        className={`fixed top-0 left-0 right-0 z-[1000] flex flex-col transition-all duration-500 bg-white border-b ${scrolled ? 'border-navy/10 shadow-lg' : 'border-transparent'}`}
+      >
+        {/* Top Bar - Hidden on scroll */}
+        <AnimatePresence>
+          {!scrolled && (
+            <motion.div 
+              initial={{ height: 50, opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="w-full bg-white border-b border-navy/5 overflow-hidden"
+            >
+              <div className="w-full h-full flex items-center justify-between px-8 md:px-12 text-[14px] font-bold uppercase tracking-wider text-navy">
+                <div className="flex gap-10 items-center">
+                  <a href="mailto:info@struzon.com" className="flex items-center gap-3 hover:text-brand-red transition-colors group">
+                    <Mail size={16} className="text-brand-red" />
+                    <span>info@struzon.com</span>
+                  </a>
+                  <div className="w-px h-4 bg-navy/10" />
+                  <a href="tel:+16469923825" className="flex items-center gap-3 hover:text-brand-red transition-colors group">
+                    <Phone size={16} className="text-brand-red" />
+                    <span>+1 (646) 992-3825</span>
+                  </a>
+                  <div className="w-px h-4 bg-navy/10" />
+                  <a href="tel:+916385828777" className="flex items-center gap-3 hover:text-brand-red transition-colors group">
+                    <Phone size={16} className="text-brand-red" />
+                    <span>+91 6385828777</span>
+                  </a>
+                </div>
+                <div className="flex gap-8 items-center">
+                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaFacebookF size={18} /></a>
+                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaLinkedinIn size={18} /></a>
+                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaInstagram size={18} /></a>
+                   <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaYoutube size={20} /></a>
+                </div>
               </div>
-              <a href="mailto:info@struzon.com" className="hidden lg:flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-                <Mail size={12} className="text-brand-red" /> info@struzon.com
-              </a>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3 text-white/60">
-                <a href="https://www.facebook.com/p/Struzon-Technologies-100057060415643/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-white transition-colors"><FaFacebookF size={12} /></a>
-                <a href="https://www.linkedin.com/company/struzon-technologies" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white transition-colors"><FaLinkedinIn size={12} /></a>
-                <a href="https://www.instagram.com/struzontechnologies/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-white transition-colors"><FaInstagram size={12} /></a>
-                <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-white transition-colors"><FaYoutube size={12} /></a>
-              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Main Nav Section */}
+        <motion.div 
+          style={{ paddingLeft: headerPadding, paddingRight: headerPadding }}
+          className="flex-1 w-full flex items-center justify-between px-8 md:px-12"
+        >
+          {/* Logo & Certifications */}
+          <div className="flex items-center gap-8">
+            <Link to="/">
+              <motion.img 
+                style={{ scale: logoScale }}
+                src={logo} 
+                alt="Struzon" 
+                className="h-16 w-auto object-contain"
+              />
+            </Link>
+            <div className="hidden lg:flex items-center gap-5 border-l border-navy/10 pl-8 py-2">
+              <motion.img whileHover={{ y: -5 }} src={badge1} className="h-16 w-auto transition-all cursor-pointer" title="AISC" />
+              <motion.img whileHover={{ y: -5 }} src={badge2} className="h-16 w-auto transition-all cursor-pointer" title="NISD" />
+              <motion.img whileHover={{ y: -5 }} src={badge3} className="h-12 w-auto transition-all cursor-pointer" title="ISO" />
             </div>
           </div>
-        </div>
 
-        {/* Main Nav Section — Full width edge-to-edge */}
-        <div className={`w-full`}>
-
-          <div className="w-full h-16 md:h-20 lg:h-24 flex items-center justify-between px-4 md:px-8 lg:px-12">
-
-            {/* 1. Branding & Badges (Left) - Fluidly Adaptive */}
-            <div className="flex items-center gap-[clamp(4px,1vw,32px)] shrink min-w-0">
-              <Link to="/" className="relative flex items-center shrink-0">
-                <div className="absolute inset-[-60%] bg-white/20 blur-[60px] rounded-full pointer-events-none opacity-80"></div>
-                <div className="absolute inset-[-20%] bg-white/30 blur-[30px] rounded-full pointer-events-none"></div>
-
-                <img
-                  src={logo}
-                  alt="Struzon"
-                  className="relative h-[clamp(24px,3.5vw,56px)] w-auto object-contain brightness-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                />
-              </Link>
-
-              {/* Badges - Fluid scaling, always visible */}
-              <div className="flex items-center gap-[clamp(2px,0.8vw,24px)] border-l border-white/20 pl-[clamp(4px,1.5vw,32px)] py-1 shrink min-w-0">
-                <img src={badge1} alt="AISC" className="h-[clamp(18px,3.2vw,64px)] w-auto object-contain transition-transform hover:scale-110" />
-                <img src={badge2} alt="NISD" className="h-[clamp(18px,3.2vw,64px)] w-auto object-contain transition-transform hover:scale-110" />
-                <img src={badge3} alt="ISO" className="h-[clamp(16px,2.8vw,56px)] w-auto object-contain transition-transform hover:scale-110" />
-              </div>
-            </div>
-
-            {/* 2. Navigation & Actions (Right) - Highly Adaptive */}
-            <div className="flex items-center justify-end gap-[clamp(4px,1vw,32px)] shrink min-w-0">
-
-              {/* Universal Fluid Nav */}
-              <nav className="hidden min-[900px]:flex items-center gap-x-0 xl:gap-x-1">
-                {links.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    className="px-[clamp(2px,0.8vw,16px)] py-2 text-[clamp(8px,1vw,14px)] uppercase tracking-tighter xl:tracking-widest font-black text-white/70 hover:text-white hover:bg-white/5 rounded-full transition-all whitespace-nowrap"
-                    activeProps={{ className: "text-white bg-white/10" }}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="flex items-center shrink-0">
-                <Link
-                  to="/contact"
-                  className="bg-brand-red px-[clamp(8px,1.5vw,32px)] py-[clamp(6px,1vw,16px)] rounded-full text-[clamp(8px,0.9vw,12px)] font-black uppercase tracking-widest text-white hover:bg-white hover:text-navy transition-all shadow-xl active:scale-95 whitespace-nowrap"
-                >
-                  Get a Quote
-                </Link>
-              </div>
-
-              {/* Mobile menu button - Triggers at 900px */}
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="min-[900px]:hidden p-1 sm:p-2 text-white"
-                aria-label="Toggle menu"
+          {/* Desktop Links */}
+          <nav className="hidden min-[1200px]:flex items-center gap-2 relative mx-4">
+            {links.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="relative px-6 py-2 text-[14px] uppercase tracking-wider font-bold text-navy/70 group"
+                activeProps={{ className: "active-nav-link" }}
               >
-                {isOpen ? <X size={24} className="sm:w-7 sm:h-7" /> : <Menu size={24} className="sm:w-7 sm:h-7" />}
-              </button>
-            </div>
+                {({ isActive }) => (
+                  <>
+                    <span className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-brand-red' : 'group-hover:text-navy'}`}>
+                      {link.label}
+                    </span>
+                    {isActive && (
+                      <motion.div 
+                        layoutId="nav-glow"
+                        className="absolute inset-0 bg-navy/5 rounded-full z-0"
+                      />
+                    )}
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full" />
+                  </>
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Action Area */}
+          <div className="flex items-center gap-10">
+            <Link 
+              to="/contact" 
+              className="hidden sm:flex group relative items-center gap-5 bg-navy text-white px-12 py-5 rounded-full overflow-hidden transition-all hover:pr-14"
+            >
+              <span className="absolute inset-0 bg-brand-red translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              <span className="relative z-10 text-[14px] font-black uppercase tracking-[0.2em]">Get a Quote</span>
+              <ChevronRight className="relative z-10 w-6 h-6 transition-transform group-hover:translate-x-2" />
+            </Link>
+
+            <button
+              onClick={() => setIsOpen(true)}
+              className="p-4 text-navy hover:bg-navy/5 rounded-full transition-colors lg:hidden"
+            >
+              <Menu size={32} />
+            </button>
           </div>
-        </div>
-      </header>
+        </motion.div>
+      </motion.header>
 
-
-      {/* Mobile nav drawer — Portaled to body for absolute stacking dominance */}
+      {/* Mobile Drawer */}
       {mounted && createPortal(
         <AnimatePresence>
           {isOpen && (
@@ -155,47 +166,58 @@ export function SiteHeader() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsOpen(false)}
-                className="fixed inset-0 bg-navy/98 backdrop-blur-md z-[5010]"
+                className="fixed inset-0 bg-navy/40 backdrop-blur-xl z-[5010]"
               />
               <motion.div
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-navy z-[5020] shadow-2xl border-l border-white/5 flex flex-col scrollbar-hide"
+                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                className="fixed top-0 right-0 bottom-0 w-[85%] max-w-md bg-white z-[5020] shadow-2xl flex flex-col"
               >
-                <div className="p-8 pb-4">
+                <div className="p-8 flex items-center justify-between border-b border-navy/5">
                   <img src={logo} alt="Struzon" className="h-8 w-auto" />
+                  <button onClick={() => setIsOpen(false)} className="p-2 text-navy hover:bg-navy/5 rounded-full transition-colors">
+                    <X size={24} />
+                  </button>
                 </div>
-                <nav className="flex flex-col p-8 gap-6 overflow-y-auto flex-1 scrollbar-hide">
-                  {links.map((link) => (
-                    <Link
+                
+                <nav className="flex-1 px-8 py-12 flex flex-col gap-6 overflow-y-auto">
+                  {links.map((link, i) => (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
                       key={link.to}
-                      to={link.to}
-                      onClick={() => setIsOpen(false)}
-                      className="text-2xl uppercase tracking-[0.2em] font-black text-white/90 hover:text-white transition-colors"
-                      activeProps={{ className: "!text-brand-red" }}
                     >
-                      {link.label}
-                    </Link>
+                      <Link
+                        to={link.to}
+                        onClick={() => setIsOpen(false)}
+                        className="text-4xl font-black uppercase tracking-tighter text-navy/20 hover:text-navy transition-colors block"
+                        activeProps={{ className: "!text-brand-red !opacity-100" }}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
                   ))}
-                  <Link
-                    to="/contact"
-                    onClick={() => setIsOpen(false)}
-                    className="mt-4 bg-brand-red rounded-full text-center py-5 text-base font-black uppercase tracking-[0.2em] text-white shadow-xl"
-                  >
-                    Get a Quote
-                  </Link>
-
-                  <div className="mt-auto pt-10 grid grid-cols-2 gap-4 border-t border-white/5">
-                    <div className="text-[10px] uppercase font-black tracking-widest text-white/30">Connect</div>
-                    <div className="flex gap-4">
-                      <FaFacebookF className="text-white/40 hover:text-brand-red" />
-                      <FaLinkedinIn className="text-white/40 hover:text-brand-red" />
-                      <FaInstagram className="text-white/40 hover:text-brand-red" />
-                    </div>
-                  </div>
                 </nav>
+
+                <div className="p-8 bg-navy text-white">
+                  <p className="text-[10px] uppercase font-black tracking-widest text-white/50 mb-6">Ready to start?</p>
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setIsOpen(false)}
+                    className="w-full bg-brand-red text-center py-5 rounded-sm font-black uppercase tracking-[0.2em] block shadow-lg active:scale-95 transition-transform"
+                  >
+                    Get a Free Quote
+                  </Link>
+                  <div className="mt-10 flex gap-6 text-white/40">
+                    <a href="#" target="_blank" rel="noopener noreferrer"><FaFacebookF size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer"><FaLinkedinIn size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer"><FaInstagram size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                    <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer"><FaYoutube size={20} className="hover:text-white transition-colors cursor-pointer" /></a>
+                  </div>
+                </div>
               </motion.div>
             </>
           )}

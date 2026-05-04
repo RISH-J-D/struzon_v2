@@ -284,8 +284,24 @@ function Careers() {
                         {experienceType === 'experienced' && (
                           <div className="grid gap-4 sm:grid-cols-2 animate-in fade-in slide-in-from-top-2 duration-300">
                             <div className="space-y-1">
-                              <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Years of Experience *</label>
-                              <input name="yearsOfExperience" required type="number" min="0" step="0.5" className="w-full bg-slate-50 border-0 p-4 text-sm outline-none focus:ring-2 focus:ring-brand-red/20 transition-all" />
+                              <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Years of Experience Range *</label>
+                              <div className="flex items-center gap-2">
+                                <select 
+                                  name="yearsOfExperienceFrom" 
+                                  required 
+                                  className="flex-1 bg-slate-50 border-0 p-4 text-sm outline-none focus:ring-2 focus:ring-brand-red/20 transition-all appearance-none"
+                                >
+                                  {Array.from({length: 12}, (_, i) => i + 1).map(y => <option key={y} value={y}>{y} Years</option>)}
+                                </select>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase">To</span>
+                                <select 
+                                  name="yearsOfExperienceTo" 
+                                  required 
+                                  className="flex-1 bg-slate-50 border-0 p-4 text-sm outline-none focus:ring-2 focus:ring-brand-red/20 transition-all appearance-none"
+                                >
+                                  {Array.from({length: 12}, (_, i) => i + 1).map(y => <option key={y} value={y}>{y} Years</option>)}
+                                </select>
+                              </div>
                             </div>
                             <div className="space-y-1">
                               <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Previous Company Name *</label>

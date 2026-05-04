@@ -118,8 +118,14 @@ const handler: Handler = async (event) => {
         { label: "Email Address", value: details.email },
         { label: "Company", value: details.company },
         { label: "Phone Number", value: details.phone },
-        { label: "Project Details", value: details.project },
       ];
+      if (details.drive_link) {
+        sections.push({ 
+          label: "Google Drive Link", 
+          value: `<a href="${details.drive_link}" style="color: #e31e24; text-decoration: underline;">${details.drive_link}</a>` 
+        });
+      }
+      sections.push({ label: "Project Details", value: details.project });
     } else if (type === "career") {
       title = "Job Application";
       sections = [

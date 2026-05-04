@@ -22,7 +22,7 @@ const offices = [
   {
     c: "USA",
     flag: "🇺🇸",
-    name: "Struzon Technologies ",
+    name: "Struzon Technologies INC ",
     address: "98, Cuttermill Road, Suite 466 S, Great Neck, NY 11021",
     phones: ["+1 (646) 992-3825", "+1 (404) 902-6781"]
   },
@@ -38,6 +38,11 @@ const offices = [
 function Contact() {
   const [sent, setSent] = useState(false);
   const { content } = useContent();
+
+  const isDriveLink = (url: string) => {
+    const driveRegex = /https?:\/\/(?:drive|docs)\.google\.com\/(?:folderview\?id=|open\?id=|drive\/folders\/|file\/d\/)([a-zA-Z0-9_-]+)/;
+    return driveRegex.test(url);
+  };
 
   return (
     <PageShell>
@@ -140,7 +145,7 @@ function Contact() {
                     A confirmation email has been sent to your provided address. Please check your inbox for further instructions.
                   </p>
                 </div>
-                <button 
+                <button
                   onClick={() => setSent(false)}
                   className="mt-10 w-full border-2 border-navy py-4 text-xs font-black uppercase tracking-widest text-navy hover:bg-navy hover:text-white transition-all"
                 >
@@ -153,27 +158,18 @@ function Contact() {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
                   const data = Object.fromEntries(formData.entries());
-                  
-                  const loadingToast = toast.loading("Sending your quote request...");
-                  
-                  try {
-                    const attachments = [];
-                    const files = (e.currentTarget.querySelector('input[type="file"]') as HTMLInputElement).files;
-                    
-                    if (files && files.length > 0) {
-                      const { fileToBase64 } = await import("@/lib/email-actions");
-                      for (let i = 0; i < files.length; i++) {
-                        const base64 = await fileToBase64(files[i]);
-                        attachments.push({
-                          filename: files[i].name,
-                          content: base64
-                        });
-                      }
-                    }
 
+                  // Drive link validation
+                  if (data.drive_link && !isDriveLink(data.drive_link as string)) {
+                    toast.error("Please provide a valid Google Drive link.");
+                    return;
+                  }
+
+                  const loadingToast = toast.loading("Sending your quote request...");
+
+                  try {
                     await sendProjectEnquiry({
-                      ...(data as any),
-                      attachments
+                      ...(data as any)
                     });
                     toast.success("Quote request sent successfully!", { id: loadingToast });
                     setSent(true);
@@ -201,33 +197,29 @@ function Contact() {
                   <label className="text-[10px] uppercase tracking-[0.2em] text-navy font-black mb-2 block">Tell us about your project *</label>
                   <textarea required name="project" rows={5} className="w-full resize-none border-b-2 border-navy/10 bg-transparent px-0 py-3 outline-none transition-all focus:border-brand-red focus:bg-white/50" />
                 </div>
-                <div>
-                  <label className="text-[10px] uppercase tracking-[0.2em] text-navy font-black mb-2 block">Project Files (JPG, PNG, PDF)</label>
-                  <div className="relative group/file">
-                    <input
-                      type="file"
-                      multiple
-                      accept=".jpg,.jpeg,.png,.pdf"
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      onChange={(e) => {
-                        const files = e.target.files;
-                        if (files && files.length > 0) {
-                          const label = document.getElementById('file-label');
-                          if (label) label.textContent = `${files.length} file(s) selected`;
-                        }
-                      }}
-                    />
-                    <div className="border-2 border-dashed border-navy/10 rounded-lg p-8 flex flex-col items-center justify-center gap-3 transition-all group-hover/file:border-brand-red group-hover/file:bg-brand-red/5 bg-white/50">
-                      <div className="h-12 w-12 rounded-full bg-navy/5 flex items-center justify-center group-hover/file:bg-brand-red/10 transition-colors">
-                        <Upload className="h-6 w-6 text-navy/30 group-hover/file:text-brand-red transition-colors" />
-                      </div>
-                      <div className="text-center">
-                        <span id="file-label" className="text-navy/60 text-sm font-medium block">Click or drag files to upload</span>
-                        <span className="text-navy/30 text-[10px] uppercase tracking-wider block mt-1">Maximum 10MB per file</span>
+
+                <div className="space-y-4">
+                  <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                    <label className="text-[10px] uppercase tracking-[0.2em] text-navy font-black mb-2 block">Project Files (Google Drive Link) *</label>
+                    <div className="relative group/file">
+                      <input
+                        required
+                        type="url"
+                        name="drive_link"
+                        placeholder="https://drive.google.com/..."
+                        className="w-full border-b-2 border-navy/10 bg-transparent px-0 py-3 outline-none transition-all focus:border-brand-red focus:bg-white/50 pr-10"
+                      />
+                      <div className="absolute right-0 bottom-3">
+                        <MapPin className="h-5 w-5 text-navy/20 group-focus-within:text-brand-red transition-colors" />
                       </div>
                     </div>
+                    <p className="mt-2 text-[9px] text-navy/40 uppercase font-bold tracking-widest leading-loose">
+                      Please upload your drawings/folders to Google Drive and paste the shareable link here. <br />
+                      Ensures we can access projects of any size (MBs to GBs).
+                    </p>
                   </div>
                 </div>
+
                 <button type="submit" className="w-full bg-brand-red py-5 px-8 font-display uppercase tracking-widest text-white font-black text-sm hover:bg-brand-red-dark transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 active:translate-y-0">
                   Submit Enquiry →
                 </button>

@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useContent } from "@/lib/ContentContext";
 import { PageShell, PageHero } from "@/components/PageShell";
 import { ShieldCheck, Zap, Target, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Masonry from "@/components/OfficeGallery";
 import { supabase } from "@/lib/supabase";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // ASSETS
 import imgP1 from "@/assets/project-1.jpg";
@@ -86,101 +86,154 @@ const officeGalleryItems = [
 ];
 
 function SuccessTimeline() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hasCompletedFirstCycle, setHasCompletedFirstCycle] = useState(false);
+  const totalItems = timelineData.length;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => {
+        if (prev === totalItems - 1) {
+          setHasCompletedFirstCycle(true);
+        }
+        return (prev + 1) % totalItems;
+      });
+    }, 500);
+    return () => clearInterval(interval);
+  }, [totalItems]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 }
+  };
+
   return (
-    <div className="relative w-full max-w-lg mx-auto py-20 font-display">
-      <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-8 z-10 flex flex-col items-center">
+    <div className="relative w-full max-w-4xl mx-auto font-display flex flex-col items-center">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="w-full relative z-20"
+      >
+        {/* Central Path Background */}
+        <div className="absolute top-[28px] bottom-[28px] left-1/2 -translate-x-1/2 w-1 bg-navy/10 z-0" />
+
+        {/* Progress Growth Line */}
         <motion.div
-          animate={{ top: ["100%", "-20%"] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-16 h-40 bg-white/30 blur-2xl z-40"
+          animate={{
+            height: hasCompletedFirstCycle ? '100%' : `${(activeIndex / (totalItems - 1)) * 100}%`
+          }}
+          transition={{ duration: 0.8, ease: "circOut" }}
+          className="absolute bottom-[28px] left-1/2 -translate-x-1/2 w-1 bg-gradient-to-t from-navy via-brand-red to-brand-red z-10 origin-bottom"
         />
+
+        {/* Traveling Glow Particle */}
         <motion.div
-          animate={{ boxShadow: ["0 0 0px rgba(199,31,36,0)", "0 0 20px rgba(199,31,36,0.4)", "0 0 0px rgba(199,31,36,0)"] }}
-          whileHover={{ scale: 1.15, boxShadow: "0 0 40px rgba(199,31,36,0.6)", zIndex: 100 }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          style={{ backgroundColor: "#c71f24" }}
-          className="relative w-28 h-8 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-2xl z-50 mb-0 -ml-1 cursor-pointer transition-shadow"
-        >
-          2026
-        </motion.div>
-        <div className="flex flex-col flex-1 w-full mt-[2px]">
-          {[...timelineData].reverse().slice(1).map((item, i) => (
-            <div key={item.year} className="relative flex-1 min-h-[120px] w-full flex flex-col items-center">
-              <div
-                className="w-full flex-1"
-                style={{
-                  background: `linear-gradient(to bottom, ${timelineData[timelineData.length - 1 - i].color}, ${item.color})`,
-                  clipPath: 'polygon(0% 0%, 50% 15%, 100% 0%, 100% 85%, 50% 100%, 0% 85%)',
-                  marginTop: '-12px'
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="relative z-20 flex flex-col-reverse w-full">
-        {timelineData.map((item, i) => {
-          if (item.year === "2026") return null;
+          animate={{
+            bottom: `calc(${(activeIndex / (totalItems - 1)) * 100}% + 28px)`
+          }}
+          transition={{ duration: 0.8, ease: "circOut" }}
+          className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-red rounded-full shadow-[0_0_20px_rgba(199,31,36,1)] z-20 -mb-2"
+        />
+
+        {[...timelineData].reverse().map((item, i) => {
+          // Since we reversed the data for display (2026 at top), 
+          // we need to map the activeIndex (0=2017) to the reversed index.
+          const actualDataIndex = (totalItems - 1) - i;
+          const isRevealed = hasCompletedFirstCycle || activeIndex >= actualDataIndex;
+          const isCurrentlyPopping = activeIndex === actualDataIndex;
+
           const isLeft = i % 2 !== 0;
 
           return (
-            <motion.div
-              key={item.year}
-              initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              whileHover={{
-                scale: 1.08,
-                x: isLeft ? -15 : 15,
-                zIndex: 50,
-                transition: { type: "spring", stiffness: 400, damping: 10 }
-              }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.05 }}
-              className={`flex items-center w-full min-h-[120px] cursor-pointer ${isLeft ? 'flex-row-reverse' : 'flex-row'}`}
-            >
-              <div className={`w-1/2 flex items-center ${isLeft ? 'justify-start' : 'justify-end'}`}>
+            <div key={item.year} className="relative flex flex-col items-center w-full mb-20 md:mb-24 last:mb-0">
+              {/* Year Block & Content Container */}
+              <div className="relative w-full flex items-center justify-center min-h-[100px]">
+                {/* Year Badge */}
                 <motion.div
                   animate={{
-                    scale: [1, 1.03, 1],
-                    filter: ["brightness(1)", "brightness(1.1)", "brightness(1)"]
+                    scale: isCurrentlyPopping ? 1.15 : (isRevealed ? 1 : 0.9),
+                    opacity: isRevealed ? 1 : 0.4,
                   }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    repeatDelay: 5,
-                    delay: i * 0.3
-                  }}
-                  className={`flex items-center px-1 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}
+                  className="z-30 relative group cursor-pointer"
                 >
                   <div
-                    className="w-4 h-8 -mx-0.5 shadow-2xl"
-                    style={{
-                      backgroundColor: item.color,
-                      opacity: 0.9,
-                      clipPath: isLeft ? 'polygon(0 0, 100% 20%, 100% 80%, 0 100%)' : 'polygon(100% 0, 0 20%, 0 80%, 100% 100%)'
-                    }}
-                  />
-                  <div
-                    className="px-6 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.2)] z-30 rounded-sm"
-                    style={{ backgroundColor: item.color }}
+                    className="w-32 h-14 flex items-center justify-center text-white font-black text-2xl shadow-xl relative transition-colors duration-500"
+                    style={{ backgroundColor: isRevealed ? item.color : '#e2e8f0' }}
                   >
-                    <span className="text-white font-black text-2xl tracking-tighter">{item.year}</span>
+                    {item.year}
+                    <div
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[64px] border-r-[64px] border-t-[10px] border-l-transparent border-r-transparent z-40"
+                      style={{ borderTopColor: isRevealed ? item.color : '#e2e8f0' }}
+                    />
                   </div>
-                  <div className={`px-4 max-w-[200px] md:max-w-[220px] ${isLeft ? 'md:text-right text-left' : 'text-left'}`}>
-                    <h4 className="font-black text-navy uppercase text-xs md:text-sm leading-tight mb-1 group-hover:text-brand-red transition-colors">{item.title}</h4>
+                </motion.div>
+
+                {/* Description Content (Desktop) */}
+                <div className={`absolute top-0 bottom-0 w-full flex items-center pointer-events-none ${isLeft ? 'justify-start md:justify-start' : 'justify-end md:justify-end'}`}>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{
+                      opacity: isRevealed ? 1 : 0,
+                      scale: isCurrentlyPopping ? 1.1 : 1,
+                      y: isCurrentlyPopping ? -5 : 0,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20
+                    }}
+                    className={`max-w-[180px] sm:max-w-[240px] md:max-w-[280px] pointer-events-auto px-4 
+                      ${isLeft
+                        ? 'text-right pr-32 md:pr-40 left-0 right-auto md:relative'
+                        : 'text-left pl-32 md:pl-40 right-0 left-auto md:relative'
+                      }
+                      hidden md:block transition-all duration-300
+                    `}
+                  >
+                    <h4 className={`font-black uppercase text-xs md:text-base leading-tight mb-1 transition-colors ${isCurrentlyPopping ? 'text-brand-red' : 'text-navy'}`}>
+                      {item.title}
+                    </h4>
                     {item.desc && (
-                      <p className="text-[10px] font-bold text-brand-red opacity-90 leading-tight">
+                      <p className={`text-[10px] md:text-[11px] font-bold leading-relaxed uppercase tracking-tight transition-colors ${isCurrentlyPopping ? 'text-brand-red' : 'text-brand-red/60'}`}>
                         {item.desc}
                       </p>
                     )}
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </div>
               </div>
-              <div className="w-1/2" />
-            </motion.div>
+
+              {/* Mobile Description */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{
+                  opacity: isRevealed ? 1 : 0,
+                  y: isCurrentlyPopping ? -5 : (isRevealed ? 0 : 10),
+                  scale: isCurrentlyPopping ? 1.05 : 1
+                }}
+                className="md:hidden w-full px-6 py-4 text-center"
+              >
+                <h4 className={`font-black uppercase text-sm leading-tight mb-2 transition-colors ${isCurrentlyPopping ? 'text-brand-red' : 'text-navy'}`}>
+                  {item.title}
+                </h4>
+                {item.desc && (
+                  <p className={`text-[11px] font-bold leading-relaxed uppercase tracking-tight transition-colors ${isCurrentlyPopping ? 'text-brand-red' : 'text-brand-red/60'}`}>
+                    {item.desc}
+                  </p>
+                )}
+              </motion.div>
+            </div>
           );
         })}
-      </div>
+      </motion.div>
+
+      {/* Decorative Glow Particle */}
+      <motion.div
+        animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.2, 1] }}
+        transition={{ duration: 4, repeat: Infinity }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-brand-red/10 blur-[100px] pointer-events-none"
+      />
     </div>
   );
 }
@@ -196,7 +249,7 @@ function About() {
         .select('*')
         .eq('gallery_name', 'OfficeGallery')
         .order('created_at', { ascending: false });
-      
+
       if (data && data.length > 0) {
         const formatted = data.map(item => ({
           id: item.id,
@@ -217,12 +270,12 @@ function About() {
         title={content.about_hero_title || "We Build What You Envision"}
         subtitle={content.about_hero_subtitle || "A global leader in structural steel detailing, connection design, and engineering excellence."}
       />
-      <section className="py-20 md:py-32 bg-background overflow-hidden">
+      <section className="py-15 md:py-30 bg-background overflow-hidden">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-12">
-              <div className="text-[50px] uppercase tracking-[0.1em] text-brand-red font-black mb-10">Who We Are</div>
-              <h2 className="text-4xl md:text-5xl font-display font-black text-navy uppercase tracking-tightest leading-[1.2] mb-12 whitespace-pre-line">
+              <div className="text-3xl md:text-[50px] uppercase tracking-[0.1em] text-brand-red font-black mb-6 md:mb-10">Who We Are</div>
+              <h2 className="text-3xl md:text-5xl font-display font-black text-navy uppercase tracking-tightest leading-[1.2] mb-8 md:mb-12 whitespace-pre-line">
                 {content.about_who_title || 'Specialized Detailing\nExcellence'}
               </h2>
               <div className="grid lg:grid-cols-12 gap-x-16 gap-y-20 items-start">
@@ -275,7 +328,6 @@ function About() {
                   <div className="sticky top-50">
                     <div className="absolute top-0 left-0 right-0 p-2 -translate-y-full opacity-60 text-center">
                       <p className="text-xs font-display font-black uppercase mb-3 tracking-wider text-navy">
-                        Transforming Visions into Reality
                       </p>
                     </div>
                     <SuccessTimeline />

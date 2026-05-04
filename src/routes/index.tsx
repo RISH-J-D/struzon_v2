@@ -60,34 +60,34 @@ function Home() {
   return (
     <PageShell>
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-navy pt-20">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-navy/10 pt-10">
         <video
           src={vdoHome}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="absolute inset-0 w-full h-full object-fill"
         />
-        <div className="absolute inset-0 bg-navy/40" />
+        <div className="absolute inset-0 bg-navy/5" />
 
-        <div className="relative mx-auto max-w-[1800px] px-6 w-full py-24 md:py-32 lg:py-40 z-10 flex flex-col items-center justify-center text-center">
+        <div className="relative mx-auto max-w-[1800px] px-6 w-full py-24 md:py- lg:py-40 z-10 flex flex-col items-start justify-center text-left">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-4xl"
           >
-            <div className="text-xs md:text-lg uppercase tracking-[0.4em] text-brand-red font-black mb-4 drop-shadow">Struzon Technologies </div>
+            <div className="text-xl md:text-[clamp(1rem,6vw,3rem)] uppercase tracking-tightest text-brand-red font-black mb-2 [text-shadow:0_0_15px_rgba(255,255,255,1)]">Struzon Technologies </div>
             <h1 className="text-white text-[clamp(2.2rem,6vw,4.5rem)] font-display font-black shadow-white uppercase tracking-tightest leading-[0.9] mb-6 whitespace-pre-line">
-              {content.hero_title || 'Structural\nSteel\nDetailing &\nEngineering\nService Partner'}
+              {content.hero_title || 'Your Productivity Partner'}
             </h1>
 
-            <p className="mt-8 text-white text-lg md:text-xl max-w-2xl leading-relaxed font-medium mb-12 mx-auto whitespace-pre-line">
+            <p className="mt-8 text-white text-lg md:text-xl max-w-2xl leading-relaxed font-medium mb-12 whitespace-pre-line">
               {content.hero_subtitle || 'A trusted partner to the construction industry — pioneers of structural detailing, engineering, design and research, delivering complex, time-sensitive projects worldwide.'}
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6 pt-4">
+            <div className="flex flex-wrap justify-start gap-6 pt-4">
               <Link to="/contact" className="inline-flex items-center gap-3 bg-brand-red text-white px-10 py-5 font-display font-black uppercase tracking-widest hover:bg-white hover:text-navy transition-all shadow-2xl active:scale-95 text-base">
                 Get a Quote <ArrowRight className="h-5 w-5" />
               </Link>
@@ -102,19 +102,30 @@ function Home() {
       </section>
 
       <section className="py-16 md:py-24 bg-background">
-        <div className="mx-auto max-w-7xl px-8 grid gap-8 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-          {[
-            { h: "Where + What", p: "With offices across the globe, Struzon offers complete structural steel, connection design and BIM detailing services." },
-            { h: "Mission", p: "To add value to your project team — helping you meet fast construction schedules while delivering quality structural detailing." },
-            { h: content.home_mission_title || "Who We Are", p: content.home_mission_text || "We leverage industry-leading software, construction expertise and automated workflows to deliver superior results." },
-            { h: content.home_how_who_title || "How + Who", p: content.home_how_who_text || "We leverage industry-leading software, construction expertise and automated workflows to deliver superior results." },
-            { h: content.home_why_title || "Why", p: content.home_why_text || "We minimize risk and add value to every project." },
-          ].map((b) => (
-            <div key={b.h} className="border-l-4 border-brand-red pl-5 hover:bg-slate-50 transition-colors p-4 rounded-r-lg group">
-              <h2 className="text-2xl uppercase group-hover:text-brand-red font-black transition-colors">{b.h}</h2>
-              <p className="mt-4 text-muted-foreground leading-relaxed font-medium">{b.p}</p>
+        <div className="mx-auto max-w-7xl px-8 grid gap-8 md:grid-cols-2 items-start">
+          {/* LEFT COLUMN: QUALITY POLICY */}
+          <div className="border-l-4 border-brand-red pl-6 hover:bg-slate-50 transition-colors p-8 rounded-r-lg group h-full">
+            <h2 className="text-2xl md:text-3xl uppercase group-hover:text-brand-red font-black transition-colors mb-6">QUALITY POLICY</h2>
+            <p className="text-navy/70 text-lg md:text-2xl leading-relaxed font-medium">
+              Struzon is committed to delivering integrated engineering and structural solutions that meet applicable requirements with excellence in quality and innovation. We ensure on-time project delivery through effective planning, the provision of engineered solutions for complex projects, and customised project management. We enhance customer satisfaction by building strong partnerships grounded in trust and transparency, developing empowered personnel, and promoting ethical practices. We remain dedicated to the continual improvement of our Quality Management System and overall business performance.
+            </p>
+          </div>
+
+          {/* RIGHT COLUMN: VISION & MISSION */}
+          <div className="flex flex-col gap-8">
+            <div className="border-l-4 border-brand-red pl-6 hover:bg-slate-50 transition-colors p-8 rounded-r-lg group">
+              <h2 className="text-2xl md:text-3xl uppercase group-hover:text-brand-red font-black transition-colors mb-6">VISION</h2>
+              <p className="text-navy/70 text-lg md:text-xl leading-relaxed font-medium">
+                To be recognized as a pioneer in delivering integrated engineering and structural excellence through innovative design and transformative solutions that redefine industry standards, enhance global infrastructure, and build a sustainable, resilient future for generations to come.
+              </p>
             </div>
-          ))}
+            <div className="border-l-4 border-brand-red pl-6 hover:bg-slate-50 transition-colors p-8 rounded-r-lg group">
+              <h2 className="text-2xl md:text-3xl uppercase group-hover:text-brand-red font-black transition-colors mb-6">MISSION</h2>
+              <p className="text-navy/70 text-lg md:text-xl leading-relaxed font-medium">
+                To deliver integrated engineering and construction solutions by leveraging advanced digital technologies with excellence in quality and innovation. We ensure projects are delivered on time, driven by empowered teams, strong client partnerships, and a commitment to sustainability, integrity, and continual technological advancement.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -130,22 +141,22 @@ function Home() {
               <p className="text-navy text-lg md:text-xl leading-relaxed font-bold uppercase tracking-tight whitespace-pre-line">
                 {content.home_about_text_1 || 'Struzon, a trusted structural steel detailing/engineering service partner to the construction industry — market pioneers of engineering, design, and research.'}
               </p>
-              <p className="text-navy/70 text-base md:text-lg leading-relaxed font-medium whitespace-pre-line">
+              <p className="text-navy/70 text-base md:text-xl leading-relaxed font-medium whitespace-pre-line">
                 {content.home_about_text_2 || 'Our work integrates with steel detailing, connection design/stamping for structural, miscellaneous detailing, and BIM (Building Information Modeling) services. We help with the structure, expansion, alteration, and revamp of new and existing constructions.'}
               </p>
-              <p className="text-navy/70 text-base md:text-lg leading-relaxed font-medium whitespace-pre-line">
+              <p className="text-navy/70 text-base md:text-xl leading-relaxed font-medium whitespace-pre-line">
                 {content.home_about_text_3 || 'Our team of fully qualified engineers has a wealth of experience in all aspects of structural design, detailing, and steelwork fabrication requirements. With an ongoing commitment to invest in our staff, we are well positioned to detail every project.'}
               </p>
             </div>
 
             <div className="space-y-6">
-              <p className="text-navy/70 text-base md:text-lg leading-relaxed font-medium whitespace-pre-line">
+              <p className="text-navy/70 text-base md:text-xl leading-relaxed font-medium whitespace-pre-line">
                 {content.home_about_text_4 || 'With our strong international presence in key sectors, Struzon drives the evolution of digital information modeling. Our brand is recognized as a global leader within the structural steel detailing industry.'}
               </p>
-              <p className="text-navy/70 text-base md:text-lg leading-relaxed font-medium whitespace-pre-line">
+              <p className="text-navy/70 text-base md:text-xl leading-relaxed font-medium whitespace-pre-line">
                 {content.home_about_text_5 || 'A diverse company with an outstanding reputation for detailing complex, time-sensitive projects while delivering superior quality and a cost-effective solution.'}
               </p>
-              <p className="text-navy/70 text-base md:text-lg leading-relaxed font-medium whitespace-pre-line">
+              <p className="text-navy/70 text-base md:text-xl leading-relaxed font-medium whitespace-pre-line">
                 {content.home_about_text_6 || 'We have been increasing current standards in the matter of transmission of impeccable building structures. Our simple, and very solid administrations have figured out how to win numerous hearts.'}
               </p>
             </div>

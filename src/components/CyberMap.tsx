@@ -9,9 +9,8 @@ import { feature } from 'topojson-client';
 const LOCATIONS = [
   { id: 'us', name: 'United States', coords: [-95.7129, 37.0902] as [number, number] },
   { id: 'canada', name: 'Canada', coords: [-106.3468, 56.1304] as [number, number] },
-  // { id: 'uk', name: 'United Kingdom', coords: [-3.4360, 55.3781] as [number, number] },
-  // { id: 'europe', name: 'Europe', coords: [10.4515, 51.1657] as [number, number] },
   { id: 'india', name: 'India', coords: [78.9629, 20.5937] as [number, number] },
+  { id: 'australia', name: 'Australia', coords: [133.7751, -25.2744] as [number, number] },
 ];
 
 // ── SVG dimensions (fixed ratio 2 : 1) ──────────────────────────────────────
@@ -137,8 +136,8 @@ const CyberMap: React.FC = () => {
         {/* stat pills */}
         <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 md:mt-8">
           {[
-            { value: '5', label: 'Global Offices' },
-            { value: '45+', label: 'Clients Served' },
+            { value: '2', label: 'Global Offices' },
+            { value: '50+', label: 'Clients Served' },
             { value: '1,500+', label: 'Projects Delivered' },
           ].map((s) => (
             <div key={s.label} className="text-center min-w-[100px] md:min-w-0">

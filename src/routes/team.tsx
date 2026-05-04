@@ -142,7 +142,7 @@ function TeamPage() {
                   <img
                     src={member.image_url || localImages[member.name]}
                     alt={member.name}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 ${member.name.includes('Alan') ? 'object-top' : 'object-center'}`}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       if (localImages[member.name]) {

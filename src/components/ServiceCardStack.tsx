@@ -101,14 +101,26 @@ const services: ServiceData[] = [
 export default function ServiceCardStack() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const hoverTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMouseEnter = (index: number) => {
-    if (isTransitioning || activeIndex === index) return;
+    if (activeIndex === index) return;
 
-    setActiveIndex(index);
-    setIsTransitioning(true);
-    // Lock hover changes during the main transition duration
-    setTimeout(() => setIsTransitioning(false), 600);
+    // Clear any existing timer when moving between cards
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+
+    hoverTimerRef.current = setTimeout(() => {
+      setActiveIndex(index);
+      setIsTransitioning(true);
+      // Lock hover changes during the main transition duration
+      setTimeout(() => setIsTransitioning(false), 600);
+    }, 500); // 2-second delay as requested
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    setActiveIndex(null);
+    setIsTransitioning(false);
   };
 
   return (
@@ -117,10 +129,7 @@ export default function ServiceCardStack() {
         {/* Desktop Grid / Accordion Container */}
         <div
           className="hidden lg:block relative h-[82vh] min-h-[700px] w-full"
-          onMouseLeave={() => {
-            setActiveIndex(null);
-            setIsTransitioning(false);
-          }}
+          onMouseLeave={handleMouseLeave}
         >
           {services.map((service, index) => {
             const isActive = activeIndex === index;
