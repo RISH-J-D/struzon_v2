@@ -14,6 +14,7 @@ import imgBalasaravana from "@/assets/balasaravanan.png";
 import imgSaravanan from "@/assets/saravanan.png";
 import imgAnand from "@/assets/anand.png";
 import imgAlan from "@/assets/alan.png";
+import globalBgImage from "@/assets/Steel-Detailing-Standards-Across-The-Globe.jpg";
 
 const localImages: Record<string, string> = {
   "Rajadurai": imgRajadurai,
@@ -203,7 +204,7 @@ function TeamPage() {
         </div>
       </section>
       <motion.section layout className="relative bg-navy text-white py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-10 grayscale" style={{ backgroundImage: `url(${imgWorkplace})` }} />
+        <div className="absolute inset-0 bg-cover bg-center opacity-10 grayscale" style={{ backgroundImage: `url(${globalBgImage})` }} />
         <div className="relative mx-auto max-w-4xl px-8 text-center z-10">
           <h2 className="text-white text-[clamp(1.5rem,6vw,4rem)] font-display font-black uppercase tracking-tighter leading-[1.1] mb-8">
             {content.team_cta_title || 'Want to work with our experts?'}

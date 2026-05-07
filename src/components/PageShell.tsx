@@ -1,5 +1,6 @@
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
+import heroBgImage from "@/assets/Steel-Detailing-Standards-Across-The-Globe.jpg";
 
 export function PageShell({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +26,7 @@ export function PageHero({ eyebrow, title, subtitle }: { eyebrow?: string; title
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1600&q=80)" }}
+        style={{ backgroundImage: `url(${heroBgImage})` }}
       />
 
       {/* Blue tint overlay — edit HERO_TINT_COLOR & HERO_TINT_OPACITY above */}
