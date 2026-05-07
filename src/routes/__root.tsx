@@ -1,6 +1,7 @@
-import { Outlet, Link, createRootRoute, ScrollRestoration } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, ScrollRestoration, useLocation } from "@tanstack/react-router";
 import { Preloader } from "@/components/Preloader";
 import { ContentProvider } from "@/lib/ContentContext";
+import { useEffect } from "react";
 
 function NotFoundComponent() {
   return (
@@ -30,6 +31,12 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
+
   return (
     <ContentProvider>
       <ScrollRestoration />

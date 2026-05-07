@@ -121,7 +121,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Removed smooth scroll to prevent conflicts with programmatic navigation */
   }
 
   body {
