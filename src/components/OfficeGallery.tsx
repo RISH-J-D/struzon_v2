@@ -93,6 +93,7 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     preloadImages(items.map(i => i.img)).then(() => setImagesReady(true));
@@ -242,7 +243,18 @@ const Masonry: React.FC<MasonryProps> = ({
   };
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-visible" style={{ height: totalHeight }}>
+    <div 
+      ref={containerRef} 
+      className="relative w-full overflow-visible" 
+      style={{ height: totalHeight }}
+      onClick={() => {
+        if (selectedId) {
+          const prevEl = document.querySelector(`[data-key="${selectedId}"]`) as HTMLElement;
+          if (prevEl) handleMouseLeave(selectedId, prevEl);
+          setSelectedId(null);
+        }
+      }}
+    >
       {grid.map(item => (
         <div
           key={item.id}
@@ -254,11 +266,33 @@ const Masonry: React.FC<MasonryProps> = ({
             left: 0, 
             top: 0,
             transform: `translate(${item.x}px, ${item.y}px)`,
-            willChange: 'transform, opacity, scale' 
+            willChange: 'transform, opacity, scale',
+            zIndex: selectedId === item.id ? 20 : 1
           }}
-          onClick={() => window.open(item.url, '_blank', 'noopener')}
-          onMouseEnter={e => handleMouseEnter(item.id, e.currentTarget)}
-          onMouseLeave={e => handleMouseLeave(item.id, e.currentTarget)}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (selectedId === item.id) {
+              setSelectedId(null);
+              handleMouseLeave(item.id, e.currentTarget);
+            } else {
+              if (selectedId) {
+                const prevEl = document.querySelector(`[data-key="${selectedId}"]`) as HTMLElement;
+                if (prevEl) handleMouseLeave(selectedId, prevEl);
+              }
+              setSelectedId(item.id);
+              handleMouseEnter(item.id, e.currentTarget);
+            }
+          }}
+          onMouseEnter={e => {
+            if (window.matchMedia('(hover: hover)').matches) {
+              handleMouseEnter(item.id, e.currentTarget);
+            }
+          }}
+          onMouseLeave={e => {
+            if (window.matchMedia('(hover: hover)').matches) {
+              handleMouseLeave(item.id, e.currentTarget);
+            }
+          }}
         >
           <div
             className="relative w-full h-full rounded-[20px] shadow-[0px_20px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow hover:shadow-2xl overflow-hidden"
