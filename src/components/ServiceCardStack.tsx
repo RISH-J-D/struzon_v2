@@ -16,6 +16,10 @@ interface ServiceData {
   description: string[];
   image: string;
   tags: string[];
+  quoteFontSize?: string;
+  bodyFontSize?: string;
+  mobileQuoteFontSize?: string;
+  mobileBodyFontSize?: string;
 }
 
 const services: ServiceData[] = [
@@ -28,7 +32,11 @@ const services: ServiceData[] = [
       'With extensive experience across diverse projects, Struzon ensures that each detailing package is aligned with global standards and project-specific requirements. The result is a streamlined workflow from design to erection, enabling clients to execute projects confidently and without disruption.'
     ],
     image: imgStructural,
-    tags: ['AUTOMATED QC', '3D DETAILING']
+    tags: ['AUTOMATED QC', '3D DETAILING'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   },
   {
     title: 'MISC STEEL DETAILING',
@@ -39,7 +47,11 @@ const services: ServiceData[] = [
       'By combining practical knowledge with detailed modeling, Struzon delivers drawings that are easy to interpret and execute. This allows fabricators and contractors to handle even intricate components efficiently, ensuring that no part of the project is overlooked.'
     ],
     image: imgMisc,
-    tags: ['AUTOMATED QC', '3D COORDINATION']
+    tags: ['AUTOMATED QC', '3D COORDINATION'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   },
   {
     title: 'SPECIAL METAL DETAILING',
@@ -50,7 +62,11 @@ const services: ServiceData[] = [
       'Through advanced tools and a deep understanding of fabrication processes, Struzon is able to execute highly intricate designs with confidence. This capability allows clients to push creative boundaries while still maintaining efficiency and precision in execution.'
     ],
     image: imgSpecial,
-    tags: ['CUSTOM FABRICATION', 'ARCHITECTURAL DESIGN']
+    tags: ['CUSTOM FABRICATION', 'ARCHITECTURAL DESIGN'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   },
   {
     title: 'CONNECTION DESIGN & PE STAMPING',
@@ -61,7 +77,11 @@ const services: ServiceData[] = [
       'With the inclusion of Professional Engineer (PE) stamping, Struzon provides an added layer of assurance and credibility. This ensures that all designs meet regulatory requirements, making them suitable for a wide range of projects across different regions.'
     ],
     image: imgConnection,
-    tags: ['PE STAMPING', 'LOAD ANALYSIS']
+    tags: ['PE STAMPING', 'LOAD ANALYSIS'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   },
   {
     title: 'BIM & ABM',
@@ -72,7 +92,11 @@ const services: ServiceData[] = [
       'In addition, Struzon’s ABM outputs provide highly accurate material data, enabling better planning and procurement. This not only reduces waste but also helps clients maintain control over project costs and timelines with greater confidence.'
     ],
     image: imgBim,
-    tags: ['VDC MANAGEMENT', 'CLASH DETECTION']
+    tags: ['VDC MANAGEMENT', 'CLASH DETECTION'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   },
   {
     title: 'MATERIAL TAKEOFF & ESTIMATION',
@@ -83,7 +107,11 @@ const services: ServiceData[] = [
       'With a structured and detail-oriented approach, Struzon helps clients optimize resource allocation and improve overall project efficiency. This ensures smoother execution and contributes to maintaining profitability across projects.'
     ],
     image: imgTakeoff,
-    tags: ['COST ESTIMATION', 'MATERIAL PLANNING']
+    tags: ['COST ESTIMATION', 'MATERIAL PLANNING'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   },
   {
     title: 'RESEARCH AND DEVELOPMENT(R&D)',
@@ -94,9 +122,14 @@ const services: ServiceData[] = [
       'Through ongoing innovation and process improvement, Struzon is able to deliver smarter, faster, and more efficient solutions. This forward-thinking approach allows clients to benefit from modern practices while maintaining high standards of quality and performance.'
     ],
     image: imgRD,
-    tags: ['INNOVATION', 'TECH ADOPTION']
+    tags: ['INNOVATION', 'TECH ADOPTION'],
+    quoteFontSize: 'xl:text-[20px]',
+    bodyFontSize: 'xl:text-xl',
+    mobileQuoteFontSize: 'text-lg',
+    mobileBodyFontSize: 'text-sm'
   }
 ];
+;
 
 export default function ServiceCardStack() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -302,11 +335,11 @@ export default function ServiceCardStack() {
                       {/* Description Area with Scroll Support */}
                       <div className="flex-1 space-y-4 pr-4 overflow-y-auto custom-scrollbar pt-1 min-h-0">
                         <div className="border-l-[5px] border-brand-red pl-6">
-                          <p className="text-navy text-lg xl:text-xl font-display font-medium leading-[1.1] italic">
+                          <p className={`text-navy font-display font-medium leading-[1.1] italic ${service.quoteFontSize || 'text-xl xl:text-2xl'}`}>
                             "{service.description[0]}"
                           </p>
                         </div>
-                        <div className="space-y-3 text-navy/70 text-[13px] xl:text-sm leading-relaxed font-medium">
+                        <div className={`space-y-3 text-navy/70 leading-relaxed font-medium ${service.bodyFontSize || 'text-xl xl:text-base'}`}>
                           <p>{service.description[1]}</p>
                           <p>{service.description[2]}</p>
                         </div>
@@ -395,12 +428,12 @@ export default function ServiceCardStack() {
 
                         {/* Text Content */}
                         <div className="border-l-4 border-brand-red pl-6 mb-6">
-                          <p className="text-navy text-base font-bold leading-snug italic tracking-tight">
+                          <p className={`text-navy font-bold leading-snug italic tracking-tight ${service.mobileQuoteFontSize || 'text-lg'}`}>
                             "{service.description[0]}"
                           </p>
                         </div>
 
-                        <div className="space-y-4 text-navy/60 text-xs sm:text-sm leading-relaxed font-medium mb-8">
+                        <div className={`space-y-4 text-navy/60 leading-relaxed font-medium mb-8 ${service.mobileBodyFontSize || 'text-sm sm:text-base'}`}>
                           <p>{service.description[1]}</p>
                           <p>{service.description[2]}</p>
                         </div>
