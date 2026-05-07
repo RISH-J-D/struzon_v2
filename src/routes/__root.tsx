@@ -1,4 +1,4 @@
-import { Outlet, Link, createRootRoute } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, ScrollRestoration } from "@tanstack/react-router";
 import { Preloader } from "@/components/Preloader";
 import { ContentProvider } from "@/lib/ContentContext";
 
@@ -32,6 +32,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <ContentProvider>
+      <ScrollRestoration />
       <Preloader />
       <Outlet />
     </ContentProvider>
