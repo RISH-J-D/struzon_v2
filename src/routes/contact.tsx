@@ -94,14 +94,23 @@ function Contact() {
                   </div>
                 </div>
               ))}
-              <div className="pt-6 border-t border-navy/10">
+              <div className="pt-6 border-t border-navy/10 space-y-4">
                 <a href={`mailto:${content.contact_email || 'info@struzon.com'}`} className="flex items-center gap-4 group w-fit">
                   <div className="h-12 w-12 rounded-full bg-navy flex items-center justify-center group-hover:bg-brand-red transition-all shadow-lg">
                     <Mail className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Email Address</div>
+                    <div className="text-xs uppercase tracking-widest text-muted-foreground font-bold">General Enquiries</div>
                     <div className="text-xl font-display font-bold text-navy group-hover:text-brand-red transition-colors">{content.contact_email || 'info@struzon.com'}</div>
+                  </div>
+                </a>
+                <a href={`mailto:${content.contact_email_2 || 'anand@struzon.com'}`} className="flex items-center gap-4 group w-fit">
+                  <div className="h-12 w-12 rounded-full bg-navy flex items-center justify-center group-hover:bg-brand-red transition-all shadow-lg">
+                    <Mail className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Direct Email</div>
+                    <div className="text-xl font-display font-bold text-navy group-hover:text-brand-red transition-colors">{content.contact_email_2 || 'anand@struzon.com'}</div>
                   </div>
                 </a>
               </div>

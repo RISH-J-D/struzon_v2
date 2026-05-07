@@ -33,27 +33,49 @@ export function SiteHeader() {
   const { scrollY } = useScroll();
 
   // Scroll animations
-  const headerHeight = useTransform(scrollY, [0, 100], ["150px", "100px"]);
-  const headerPadding = useTransform(scrollY, [0, 100], ["50px", "25px"]);
-  const logoScale = useTransform(scrollY, [0, 100], [1, 0.85]);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1920);
 
   useEffect(() => {
     setMounted(true);
+    const handleResize = () => setWindowWidth(window.innerWidth);
     const handleScroll = () => setScrolled(window.scrollY > 50);
+
+    window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+  const isPhone = windowWidth < 640;
+  const isTablet = windowWidth >= 640 && windowWidth < 1440;
+  const isDesktop = windowWidth >= 1440;
+
+  const headerHeight = useTransform(
+    scrollY,
+    [0, 100],
+    isPhone ? ["80px", "70px"] : isTablet ? ["100px", "85px"] : ["150px", "100px"]
+  );
+
+  const headerPadding = useTransform(
+    scrollY,
+    [0, 100],
+    isPhone ? ["10px", "8px"] : (windowWidth < 1650) ? ["15px", "10px"] : ["40px", "20px"]
+  );
+
+  const logoScale = useTransform(scrollY, [0, 100], [1, 0.85]);
 
   return (
     <>
-      <motion.header 
+      <motion.header
         style={{ height: headerHeight }}
         className={`fixed top-0 left-0 right-0 z-[1000] flex flex-col transition-all duration-500 bg-white border-b ${scrolled ? 'border-navy/10 shadow-lg' : 'border-transparent'}`}
       >
-        {/* Top Bar - Hidden on scroll */}
+        {/* Top Bar - Hidden on scroll and on mobile/tablet */}
         <AnimatePresence>
-          {!scrolled && (
-            <motion.div 
+          {!scrolled && windowWidth >= 1200 && (
+            <motion.div
               initial={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               className="w-full bg-white border-b border-navy/5 overflow-hidden"
@@ -76,10 +98,10 @@ export function SiteHeader() {
                   </a>
                 </div>
                 <div className="flex gap-6 sm:gap-8 items-center">
-                   <a href="https://www.facebook.com/people/Struzon-Technologies/100057060415643/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaFacebookF size={16} /></a>
-                   <a href="https://www.linkedin.com/company/struzon-technologies/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaLinkedinIn size={16} /></a>
-                   <a href="https://www.instagram.com/struzontechnologies?igsh=MWp0c2w1emdkbjQ3Mw==" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaInstagram size={16} /></a>
-                   <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaYoutube size={18} /></a>
+                  <a href="https://www.facebook.com/people/Struzon-Technologies/100057060415643/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaFacebookF size={16} /></a>
+                  <a href="https://www.linkedin.com/company/struzon-technologies/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaLinkedinIn size={16} /></a>
+                  <a href="https://www.instagram.com/struzontechnologies?igsh=MWp0c2w1emdkbjQ3Mw==" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaInstagram size={16} /></a>
+                  <a href="https://www.youtube.com/@struzontechnologiespvtltd3935" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaYoutube size={18} /></a>
                 </div>
               </div>
             </motion.div>
@@ -87,71 +109,73 @@ export function SiteHeader() {
         </AnimatePresence>
 
         {/* Main Nav Section */}
-        <motion.div 
+        <motion.div
           style={{ paddingLeft: headerPadding, paddingRight: headerPadding }}
-          className="flex-1 w-full flex items-center justify-between px-4 md:px-12 gap-4"
+          className="flex-1 w-full flex items-center justify-between px-2 lg:px-12 gap-2 lg:gap-4"
         >
           {/* Logo & Certifications */}
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-8 min-w-0">
+          <div className="flex items-center justify-start gap-1 lg:gap-3 xl:gap-8 min-w-0 shrink-0">
             <Link to="/" className="shrink-0">
-              <motion.img 
+              <motion.img
                 style={{ scale: logoScale }}
-                src={logo} 
-                alt="Struzon" 
-                className="h-10 sm:h-12 md:h-16 w-auto object-contain"
+                src={logo}
+                alt="Struzon"
+                className="h-6 sm:h-8 md:h-10 lg:h-11 xl:h-16 w-auto object-contain"
               />
             </Link>
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-5 border-l border-navy/10 pl-3 md:pl-8 py-1 md:py-2">
-              <motion.img whileHover={{ y: -5 }} src={badge1} className="h-8 sm:h-10 md:h-16 w-auto transition-all cursor-pointer" title="AISC" />
-              <motion.img whileHover={{ y: -5 }} src={badge2} className="h-8 sm:h-10 md:h-16 w-auto transition-all cursor-pointer" title="NISD" />
-              <motion.img whileHover={{ y: -5 }} src={badge3} className="h-6 sm:h-8 md:h-12 w-auto transition-all cursor-pointer" title="ISO" />
+            <div className="flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-12 border-l border-navy/10 pl-3 sm:pl-5 md:pl-6 lg:pl-8 xl:pl-10 py-1 md:py-2 shrink-0">
+              <motion.img whileHover={{ y: -5 }} src={badge1} className="h-5 sm:h-7 md:h-9 lg:h-10 xl:h-[72px] w-auto transition-all cursor-pointer" title="AISC" />
+              <motion.img whileHover={{ y: -5 }} src={badge2} className="h-5 sm:h-7 md:h-9 lg:h-10 xl:h-[72px] w-auto transition-all cursor-pointer" title="NISD" />
+              <motion.img whileHover={{ y: -5 }} src={badge3} className="h-4 sm:h-6 md:h-8 lg:h-9 xl:h-16 w-auto transition-all cursor-pointer" title="ISO" />
             </div>
           </div>
+          {/* Right Group: Links + Action Area */}
+          <div className="flex items-center ml-auto min-w-0">
+            {/* Desktop Links */}
+            <nav className="hidden min-[1440px]:flex items-center gap-0 relative mr-1 xl:mr-4 shrink">
+              {links.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="relative px-1.5 xl:px-5 py-2 text-[10px] xl:text-[14px] uppercase tracking-wider font-bold text-navy/70 group whitespace-nowrap"
+                  activeProps={{ className: "active-nav-link" }}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-brand-red' : 'group-hover:text-navy'}`}>
+                        {link.label}
+                      </span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="nav-glow"
+                          className="absolute inset-0 bg-navy/5 rounded-full z-0"
+                        />
+                      )}
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full" />
+                    </>
+                  )}
+                </Link>
+              ))}
+            </nav>
 
-          {/* Desktop Links */}
-          <nav className="hidden min-[1250px]:flex items-center gap-2 relative mx-4 shrink-0">
-            {links.map((link) => (
+            {/* Action Area */}
+            <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-8 shrink-0">
               <Link
-                key={link.to}
-                to={link.to}
-                className="relative px-5 py-2 text-[14px] uppercase tracking-wider font-bold text-navy/70 group whitespace-nowrap"
-                activeProps={{ className: "active-nav-link" }}
+                to="/contact"
+                className="flex group relative items-center gap-1 sm:gap-1.5 bg-navy text-white px-2 sm:px-3 lg:px-5 xl:px-10 py-1.5 sm:py-2 lg:py-3 xl:py-4 rounded-full overflow-hidden transition-all hover:pr-4 xl:hover:pr-12"
               >
-                {({ isActive }) => (
-                  <>
-                    <span className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-brand-red' : 'group-hover:text-navy'}`}>
-                      {link.label}
-                    </span>
-                    {isActive && (
-                      <motion.div 
-                        layoutId="nav-glow"
-                        className="absolute inset-0 bg-navy/5 rounded-full z-0"
-                      />
-                    )}
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full" />
-                  </>
-                )}
+                <span className="absolute inset-0 bg-brand-red translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                <span className="relative z-10 text-[8px] sm:text-[9px] xl:text-[10px] font-black uppercase tracking-[0.05em] sm:tracking-[0.2em] whitespace-nowrap">Get a Quote</span>
+                <ChevronRight className="relative z-10 w-2 h-2 sm:w-3 sm:h-3 xl:w-5 xl:h-5 transition-transform group-hover:translate-x-2" />
               </Link>
-            ))}
-          </nav>
 
-          {/* Action Area */}
-          <div className="flex items-center gap-10">
-            <Link 
-              to="/contact" 
-              className="hidden sm:flex group relative items-center gap-5 bg-navy text-white px-12 py-5 rounded-full overflow-hidden transition-all hover:pr-14"
-            >
-              <span className="absolute inset-0 bg-brand-red translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-              <span className="relative z-10 text-[14px] font-black uppercase tracking-[0.2em]">Get a Quote</span>
-              <ChevronRight className="relative z-10 w-6 h-6 transition-transform group-hover:translate-x-2" />
-            </Link>
-
-            <button
-              onClick={() => setIsOpen(true)}
-              className="p-4 text-navy hover:bg-navy/5 rounded-full transition-colors lg:hidden"
-            >
-              <Menu size={32} />
-            </button>
+              <button
+                onClick={() => setIsOpen(true)}
+                className="p-1 sm:p-2 lg:p-4 text-navy hover:bg-navy/5 rounded-full transition-colors min-[1440px]:hidden"
+              >
+                <Menu size={windowWidth < 640 ? 20 : 28} />
+              </button>
+            </div>
           </div>
         </motion.div>
       </motion.header>
@@ -181,7 +205,7 @@ export function SiteHeader() {
                     <X size={24} />
                   </button>
                 </div>
-                
+
                 <nav className="flex-1 px-8 py-12 flex flex-col gap-6 overflow-y-auto">
                   {links.map((link, i) => (
                     <motion.div
@@ -204,8 +228,8 @@ export function SiteHeader() {
 
                 <div className="p-8 bg-navy text-white">
                   <p className="text-[10px] uppercase font-black tracking-widest text-white/50 mb-6">Ready to start?</p>
-                  <Link 
-                    to="/contact" 
+                  <Link
+                    to="/contact"
                     onClick={() => setIsOpen(false)}
                     className="w-full bg-brand-red text-center py-5 rounded-sm font-black uppercase tracking-[0.2em] block shadow-lg active:scale-95 transition-transform"
                   >

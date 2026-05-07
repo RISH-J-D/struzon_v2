@@ -60,7 +60,7 @@ function Home() {
   return (
     <PageShell>
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-navy/10 pt-10">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-navy/10 pt-20 md:pt-32 lg:pt-40">
         <video
           src={vdoHome}
           autoPlay
@@ -71,19 +71,19 @@ function Home() {
         />
         <div className="absolute inset-0 bg-navy/5" />
 
-        <div className="relative mx-auto max-w-[1800px] px-6 w-full py-24 md:py- lg:py-40 z-10 flex flex-col items-start justify-center text-left">
+        <div className="relative mx-auto max-w-[1800px] px-6 w-full py-12 md:py-32 lg:py-40 z-10 flex flex-col items-start justify-center text-left">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-4xl"
           >
-            <div className="text-xl md:text-[clamp(1rem,6vw,3rem)] uppercase tracking-tightest text-brand-red font-black mb-2 [text-shadow:0_0_15px_rgba(255,255,255,1)]">Struzon Technologies </div>
+            <div className="text-lg md:text-xl lg:text-[clamp(1rem,6vw,3rem)] uppercase tracking-tightest text-brand-red font-black mb-2 [text-shadow:0_0_15px_rgba(255,255,255,1)]">Struzon Technologies </div>
             <h1 className="text-white text-[clamp(2.2rem,6vw,4.5rem)] font-display font-black shadow-white uppercase tracking-tightest leading-[0.9] mb-6 whitespace-pre-line">
               {content.hero_title || 'Your Productivity Partner'}
             </h1>
 
-            <p className="mt-8 text-white text-lg md:text-xl max-w-2xl leading-relaxed font-medium mb-12 whitespace-pre-line">
+            <p className="mt-4 md:mt-8 text-white text-base md:text-xl max-w-2xl leading-relaxed font-medium mb-8 md:mb-12 whitespace-pre-line">
               {content.hero_subtitle || 'A trusted partner to the construction industry — pioneers of structural detailing, engineering, design and research, delivering complex, time-sensitive projects worldwide.'}
             </p>
 

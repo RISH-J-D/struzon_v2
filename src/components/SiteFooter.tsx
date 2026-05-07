@@ -2,8 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from "react-icons/fa";
 import logo from "@/assets/struzon-logo.png";
+import { useContent } from "@/lib/ContentContext";
 
 export function SiteFooter() {
+  const { content } = useContent();
   return (
     <footer className="bg-white text-navy border-t border-slate-100">
       <div className="mx-auto grid max-w-7xl gap-12 px-8 py-32 md:grid-cols-4 md:text-left text-center">
@@ -67,9 +69,15 @@ export function SiteFooter() {
                 +91 6385828777
               </a>
             </li>
-            <li className="flex items-center gap-3 hover:text-brand-red transition-colors group cursor-default justify-center md:justify-start">
-              <Mail className="h-5 w-5 text-brand-red group-hover:scale-110 transition-transform" />
-              info@struzon.com
+            <li className="flex flex-col gap-3">
+              <a href={`mailto:${content.contact_email || 'info@struzon.com'}`} className="flex items-center gap-3 hover:text-brand-red transition-colors group cursor-pointer justify-center md:justify-start">
+                <Mail className="h-5 w-5 text-brand-red group-hover:scale-110 transition-transform" />
+                {content.contact_email || 'info@struzon.com'}
+              </a>
+              <a href={`mailto:${content.contact_email_2 || 'anand@struzon.com'}`} className="flex items-center gap-3 hover:text-brand-red transition-colors group cursor-pointer justify-center md:justify-start">
+                <Mail className="h-5 w-5 text-brand-red group-hover:scale-110 transition-transform" />
+                {content.contact_email_2 || 'anand@struzon.com'}
+              </a>
             </li>
           </ul>
         </div>

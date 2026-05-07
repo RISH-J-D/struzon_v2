@@ -89,6 +89,19 @@ function SuccessTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hasCompletedFirstCycle, setHasCompletedFirstCycle] = useState(false);
   const totalItems = timelineData.length;
+  const { content } = useContent();
+  const [delay, setDelay] = useState(500);
+
+  useEffect(() => {
+    const r1 = parseInt(content.timeline_round1_delay || '500');
+    const r2 = parseInt(content.timeline_round2_delay || '2000');
+    
+    if (hasCompletedFirstCycle) {
+      setDelay(r2);
+    } else {
+      setDelay(r1);
+    }
+  }, [hasCompletedFirstCycle, content]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -98,9 +111,9 @@ function SuccessTimeline() {
         }
         return (prev + 1) % totalItems;
       });
-    }, 500);
+    }, delay);
     return () => clearInterval(interval);
-  }, [totalItems]);
+  }, [totalItems, delay]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -117,29 +130,36 @@ function SuccessTimeline() {
         className="w-full relative z-20"
       >
         {/* Central Path Background */}
-        <div className="absolute top-[28px] bottom-[28px] left-1/2 -translate-x-1/2 w-1 bg-navy/10 z-0" />
+        <div className="absolute top-[20px] bottom-[20px] left-1/2 -translate-x-1/2 w-1 bg-navy/5 z-0" />
 
-        {/* Progress Growth Line */}
+        {/* Progress Growth Line - Unified Spring Sync */}
         <motion.div
           animate={{
-            height: hasCompletedFirstCycle ? '100%' : `${(activeIndex / (totalItems - 1)) * 100}%`
+            height: hasCompletedFirstCycle ? '100%' : `${(activeIndex / (totalItems - 1)) * 100}%`,
           }}
-          transition={{ duration: 0.8, ease: "circOut" }}
-          className="absolute bottom-[28px] left-1/2 -translate-x-1/2 w-1 bg-gradient-to-t from-navy via-brand-red to-brand-red z-10 origin-bottom"
+          transition={{
+            type: "spring",
+            stiffness: 80,
+            damping: 25,
+            mass: 1
+          }}
+          className="absolute bottom-[20px] left-1/2 -translate-x-1/2 w-1 bg-brand-red z-10 origin-bottom shadow-[0_0_15px_rgba(199,31,36,0.3)]"
         />
 
-        {/* Traveling Glow Particle */}
+        {/* Traveling Glow Particle - Unified Spring Sync */}
         <motion.div
           animate={{
-            bottom: `calc(${(activeIndex / (totalItems - 1)) * 100}% + 28px)`
+            bottom: `calc(${(activeIndex / (totalItems - 1)) * 100}% + 20px)`,
+            scale: [1, 1.3, 1],
           }}
-          transition={{ duration: 0.8, ease: "circOut" }}
-          className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-red rounded-full shadow-[0_0_20px_rgba(199,31,36,1)] z-20 -mb-2"
+          transition={{
+            bottom: { type: "spring", stiffness: 80, damping: 25 },
+            scale: { duration: 0.5, repeat: Infinity, ease: "easeInOut" }
+          }}
+          className="absolute left-1/2 -translate-x-1/2 w-5 h-5 bg-white rounded-full shadow-[0_0_20px_#c71f24,0_0_8px_#fff] z-20 -mb-2.5 border-2 border-brand-red"
         />
 
         {[...timelineData].reverse().map((item, i) => {
-          // Since we reversed the data for display (2026 at top), 
-          // we need to map the activeIndex (0=2017) to the reversed index.
           const actualDataIndex = (totalItems - 1) - i;
           const isRevealed = hasCompletedFirstCycle || activeIndex >= actualDataIndex;
           const isCurrentlyPopping = activeIndex === actualDataIndex;
@@ -147,42 +167,43 @@ function SuccessTimeline() {
           const isLeft = i % 2 !== 0;
 
           return (
-            <div key={item.year} className="relative flex flex-col items-center w-full mb-20 md:mb-24 last:mb-0">
+            <div key={item.year} className="relative flex flex-col items-center w-full mb-8 md:mb-12 last:mb-0">
               {/* Year Block & Content Container */}
-              <div className="relative w-full flex items-center justify-center min-h-[100px]">
-                {/* Year Badge */}
+              <div className="relative w-full flex items-center justify-center min-h-[95px]">
+                {/* Year Badge - Unified Sync */}
                 <motion.div
                   animate={{
-                    scale: isCurrentlyPopping ? 1.15 : (isRevealed ? 1 : 0.9),
-                    opacity: isRevealed ? 1 : 0.4,
+                    scale: isCurrentlyPopping ? 1.15 : (isRevealed ? 1 : 0.85),
+                    opacity: isRevealed ? 1 : 0.2,
+                    filter: isCurrentlyPopping ? `drop-shadow(0 0 15px ${item.color})` : 'none'
                   }}
+                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
                   className="z-30 relative group cursor-pointer"
                 >
                   <div
-                    className="w-32 h-14 flex items-center justify-center text-white font-black text-2xl shadow-xl relative transition-colors duration-500"
-                    style={{ backgroundColor: isRevealed ? item.color : '#e2e8f0' }}
+                    className="w-32 h-14 flex items-center justify-center text-white font-black text-2xl shadow-xl relative transition-all duration-500"
+                    style={{
+                      backgroundColor: isRevealed ? item.color : '#e2e8f0',
+                      clipPath: 'polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%)'
+                    }}
                   >
                     {item.year}
-                    <div
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[64px] border-r-[64px] border-t-[10px] border-l-transparent border-r-transparent z-40"
-                      style={{ borderTopColor: isRevealed ? item.color : '#e2e8f0' }}
-                    />
                   </div>
                 </motion.div>
 
-                {/* Description Content (Desktop) */}
+                {/* Description Content (Desktop) - Unified Sync */}
                 <div className={`absolute top-0 bottom-0 w-full flex items-center pointer-events-none ${isLeft ? 'justify-start md:justify-start' : 'justify-end md:justify-end'}`}>
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
                     animate={{
                       opacity: isRevealed ? 1 : 0,
-                      scale: isCurrentlyPopping ? 1.1 : 1,
-                      y: isCurrentlyPopping ? -5 : 0,
+                      x: isRevealed ? 0 : (isLeft ? -30 : 30),
+                      scale: isCurrentlyPopping ? 1.05 : 1,
                     }}
                     transition={{
                       type: "spring",
-                      stiffness: 300,
-                      damping: 20
+                      stiffness: 120,
+                      damping: 20,
                     }}
                     className={`max-w-[180px] sm:max-w-[240px] md:max-w-[280px] pointer-events-auto px-4 
                       ${isLeft
@@ -206,12 +227,13 @@ function SuccessTimeline() {
 
               {/* Mobile Description */}
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{
                   opacity: isRevealed ? 1 : 0,
-                  y: isCurrentlyPopping ? -5 : (isRevealed ? 0 : 10),
+                  y: isRevealed ? 0 : 15,
                   scale: isCurrentlyPopping ? 1.05 : 1
                 }}
+                transition={{ type: "spring", stiffness: 120, damping: 20 }}
                 className="md:hidden w-full px-6 py-4 text-center"
               >
                 <h4 className={`font-black uppercase text-sm leading-tight mb-2 transition-colors ${isCurrentlyPopping ? 'text-brand-red' : 'text-navy'}`}>
@@ -230,9 +252,9 @@ function SuccessTimeline() {
 
       {/* Decorative Glow Particle */}
       <motion.div
-        animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.2, 1] }}
+        animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.2, 1] }}
         transition={{ duration: 4, repeat: Infinity }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-brand-red/10 blur-[100px] pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-brand-red/5 blur-[100px] pointer-events-none"
       />
     </div>
   );
