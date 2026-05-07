@@ -48,6 +48,7 @@ function TeamPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const [notchPosition, setNotchPosition] = useState(0);
 
   useEffect(() => {
@@ -75,7 +76,7 @@ function TeamPage() {
     setActiveIndex(idx);
     if (idx !== null && window.innerWidth < 1024) {
       setTimeout(() => {
-        cardRefs.current[idx]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        drawerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
   };
@@ -129,14 +130,14 @@ function TeamPage() {
           className="mx-auto max-w-7xl px-6 w-full relative"
           onMouseLeave={() => window.innerWidth >= 1024 && setActiveIndex(null)}
         >
-          <div className="flex lg:grid lg:grid-cols-5 gap-6 lg:gap-4 items-stretch relative z-10 overflow-x-auto lg:overflow-x-visible pb-8 lg:pb-0 scrollbar-hide snap-x snap-mandatory px-6 lg:px-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4 items-stretch relative z-10 pb-8 lg:pb-0">
             {members.map((member, idx) => (
               <div
                 key={member.name}
                 ref={(el) => { cardRefs.current[idx] = el; }}
                 onMouseEnter={() => window.innerWidth >= 1024 && handleInteraction(idx)}
                 onClick={() => handleInteraction(activeIndex === idx ? null : idx)}
-                className={`flex-shrink-0 w-[280px] sm:w-[320px] lg:w-auto snap-center flex flex-col bg-white border border-border/50 shadow-sm transition-all duration-300 overflow-hidden group cursor-pointer ${activeIndex === idx ? 'shadow-xl border-brand-red/30 -translate-y-1' : 'hover:shadow-lg hover:-translate-y-1'}`}
+                className={`w-full flex flex-col bg-white border border-border/50 shadow-sm transition-all duration-300 overflow-hidden group cursor-pointer ${activeIndex === idx ? 'shadow-xl border-brand-red/30 -translate-y-1' : 'hover:shadow-lg hover:-translate-y-1'}`}
               >
                 <div className="relative aspect-[4/5] overflow-hidden bg-muted">
                   <img
@@ -174,7 +175,7 @@ function TeamPage() {
             ))}
           </div>
 
-          <div className="relative mt-8 md:mt-12">
+          <div className="relative mt-8 md:mt-12" ref={drawerRef}>
             <AnimatePresence mode="wait">
               {activeIndex !== null && (
                 <motion.div
