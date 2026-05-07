@@ -65,24 +65,24 @@ const timelineData = [
 ];
 
 const officeGalleryItems = [
-  { id: "1", img: office1, url: "#", height: 600 },
-  { id: "2", img: office2, url: "#", height: 400 },
-  { id: "3", img: office3, url: "#", height: 800 },
-  { id: "4", img: office4, url: "#", height: 500 },
-  { id: "5", img: office5, url: "#", height: 700 },
-  { id: "6", img: office6, url: "#", height: 450 },
-  { id: "7", img: office7, url: "#", height: 650 },
-  { id: "8", img: office8, url: "#", height: 550 },
-  { id: "9", img: office9, url: "#", height: 750 },
-  { id: "10", img: office10, url: "#", height: 400 },
-  { id: "11", img: office11, url: "#", height: 600 },
-  { id: "12", img: office12, url: "#", height: 500 },
-  { id: "13", img: office13, url: "#", height: 700 },
-  { id: "14", img: office14, url: "#", height: 450 },
-  { id: "15", img: office15, url: "#", height: 850 },
-  { id: "16", img: office16, url: "#", height: 550 },
-  { id: "17", img: office17, url: "#", height: 600 },
-  { id: "18", img: office18, url: "#", height: 400 },
+  { id: "1", img: office1, url: "#", height: 600, location: "Main Reception" },
+  { id: "2", img: office2, url: "#", height: 400, location: "Meeting Lounge" },
+  { id: "3", img: office3, url: "#", height: 800, location: "Executive Cabin" },
+  { id: "4", img: office4, url: "#", height: 500, location: "Production Floor" },
+  { id: "5", img: office5, url: "#", height: 700, location: "Discussion Zone" },
+  { id: "6", img: office6, url: "#", height: 450, location: "Brainstorming Area" },
+  { id: "7", img: office7, url: "#", height: 650, location: "Cafeteria" },
+  { id: "8", img: office8, url: "#", height: 550, location: "Breakout Space" },
+  { id: "9", img: office9, url: "#", height: 750, location: "Server Room" },
+  { id: "10", img: office10, url: "#", height: 400, location: "HR Department" },
+  { id: "11", img: office11, url: "#", height: 600, location: "Design Studio" },
+  { id: "12", img: office12, url: "#", height: 500, location: "Conference Hall" },
+  { id: "13", img: office13, url: "#", height: 700, location: "Project Room" },
+  { id: "14", img: office14, url: "#", height: 450, location: "Lobby" },
+  { id: "15", img: office15, url: "#", height: 850, location: "Innovation Hub" },
+  { id: "16", img: office16, url: "#", height: 550, location: "Testing Lab" },
+  { id: "17", img: office17, url: "#", height: 600, location: "Resource Center" },
+  { id: "18", img: office18, url: "#", height: 400, location: "Quiet Zone" },
 ];
 
 function SuccessTimeline() {
@@ -276,6 +276,7 @@ function About() {
         const formatted = data.map(item => ({
           id: item.id,
           img: item.image_url,
+          location: item.location || item.title || "",
           url: "#",
           height: [400, 500, 600, 700, 800][Math.floor(Math.random() * 5)]
         }));

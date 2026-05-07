@@ -53,6 +53,7 @@ interface Item {
   img: string;
   url: string;
   height: number;
+  location?: string;
 }
 
 interface GridItem extends Item {
@@ -177,6 +178,27 @@ const Masonry: React.FC<MasonryProps> = ({
         overwrite: 'auto'
       });
     }
+    
+    const bg = element.querySelector('.gallery-bg') as HTMLElement;
+    const text = element.querySelector('.location-overlay') as HTMLElement;
+    
+    if (bg) {
+      gsap.to(bg, {
+        filter: 'blur(8px) brightness(0.7)',
+        duration: 0.4,
+        ease: 'power2.out'
+      });
+    }
+    
+    if (text) {
+      gsap.to(text, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        ease: 'back.out(1.7)'
+      });
+    }
+
     if (colorShiftOnHover) {
       const overlay = element.querySelector('.color-overlay') as HTMLElement;
       if (overlay) gsap.to(overlay, { opacity: 0.3, duration: 0.3 });
@@ -192,6 +214,27 @@ const Masonry: React.FC<MasonryProps> = ({
         overwrite: 'auto'
       });
     }
+
+    const bg = element.querySelector('.gallery-bg') as HTMLElement;
+    const text = element.querySelector('.location-overlay') as HTMLElement;
+
+    if (bg) {
+      gsap.to(bg, {
+        filter: 'blur(0px) brightness(1)',
+        duration: 0.4,
+        ease: 'power2.out'
+      });
+    }
+
+    if (text) {
+      gsap.to(text, {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        ease: 'power2.in'
+      });
+    }
+
     if (colorShiftOnHover) {
       const overlay = element.querySelector('.color-overlay') as HTMLElement;
       if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3 });
@@ -218,10 +261,26 @@ const Masonry: React.FC<MasonryProps> = ({
           onMouseLeave={e => handleMouseLeave(item.id, e.currentTarget)}
         >
           <div
-            className="relative w-full h-full bg-cover bg-center rounded-[20px] shadow-[0px_20px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow hover:shadow-2xl overflow-hidden"
-            style={{ backgroundImage: `url(${item.img})` }}
+            className="relative w-full h-full rounded-[20px] shadow-[0px_20px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow hover:shadow-2xl overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+            <div 
+              className="gallery-bg absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${item.img})` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+            
+            {item.location && (
+              <div className="location-overlay absolute inset-0 flex items-center justify-center p-6 opacity-0 translate-y-5 pointer-events-none z-10">
+                <div className="text-center">
+                  <div className="h-px w-8 bg-brand-red mx-auto mb-4" />
+                  <h3 className="text-white text-xl md:text-2xl font-display font-black uppercase tracking-widest">
+                    {item.location}
+                  </h3>
+                  <div className="h-px w-8 bg-brand-red mx-auto mt-4" />
+                </div>
+              </div>
+            )}
+
             {colorShiftOnHover && (
               <div className="color-overlay absolute inset-0 rounded-[20px] bg-gradient-to-tr from-brand-red/40 to-navy/40 opacity-0 pointer-events-none" />
             )}
