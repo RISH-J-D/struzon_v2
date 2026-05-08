@@ -61,42 +61,60 @@ function Home() {
   return (
     <PageShell>
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-navy/10 pt-20 md:pt-32 lg:pt-40">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-black">
+        {/* Background Blurred Video - Mobile Only */}
         <video
           src={vdoHome}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-fill"
+          className="absolute top-[80px] md:top-[100px] lg:top-[150px] left-0 right-0 bottom-0 w-full h-full object-cover opacity-100 blur-xl scale-110 md:hidden"
         />
-        <div className="absolute inset-0 bg-navy/5" />
 
-        <div className="relative mx-auto max-w-[1800px] px-6 w-full py-12 md:py-32 lg:py-40 z-10 flex flex-col items-start justify-center text-left">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl"
-          >
-            <div className="text-lg md:text-xl lg:text-[clamp(1rem,6vw,3rem)] uppercase tracking-tightest text-brand-red font-black mb-2 [text-shadow:0_0_15px_rgba(255,255,255,1)]">Struzon Technologies </div>
-            <h1 className="text-white text-[clamp(2.2rem,6vw,4.5rem)] font-display font-black shadow-white uppercase tracking-tightest leading-[0.9] mb-6 whitespace-pre-line">
-              {content.hero_title || 'Your Productivity Partner'}
-            </h1>
+        {/* Foreground Clean Video */}
+        <video
+          src={vdoHome}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute top-[80px] md:top-[100px] lg:top-[150px] left-0 right-0 bottom-0 w-full h-full object-contain md:object-fill z-10"
+        />
 
-            <p className="mt-4 md:mt-8 text-white text-base md:text-xl max-w-2xl leading-relaxed font-medium mb-8 md:mb-12 whitespace-pre-line">
-              {content.hero_subtitle || 'A trusted partner to the construction industry — pioneers of structural detailing, engineering, design and research, delivering complex, time-sensitive projects worldwide.'}
-            </p>
+        <div className="absolute inset-0 bg-navy/40 z-20 pointer-events-none" />
 
-            <div className="flex flex-wrap justify-start gap-6 pt-4">
-              <Link to="/contact" className="inline-flex items-center gap-3 bg-brand-red text-white px-10 py-5 font-display font-black uppercase tracking-widest hover:bg-white hover:text-navy transition-all shadow-2xl active:scale-95 text-base">
-                Get a Quote <ArrowRight className="h-5 w-5" />
-              </Link>
-              <Link to="/services" className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-5 font-display font-black uppercase tracking-widest hover:bg-white hover:text-navy transition-all shadow-2xl active:scale-95 text-base">
-                Our Services
-              </Link>
+        {/* Content Container - Centered and matching video aspect area */}
+        <div className="absolute top-[80px] md:top-[100px] lg:top-[150px] left-0 right-0 bottom-0 z-30 flex items-center justify-center">
+          <div className="relative w-full h-full flex items-center justify-center max-w-[1800px]">
+            {/* This div matches the object-contain video area (assuming 16:9 or similar) */}
+            <div className="w-full aspect-video max-h-full flex flex-col items-start justify-center px-6 md:px-12 text-left">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="max-w-4xl"
+              >
+                <div className="text-sm md:text-xl lg:text-[clamp(1rem,6vw,3rem)] uppercase tracking-tightest text-brand-red font-black mb-1 md:mb-2 [text-shadow:0_0_15px_rgba(255,255,255,1)]">Struzon Technologies </div>
+                <h1 className="text-white text-[clamp(1.4rem,6vw,4.5rem)] font-display font-black shadow-white uppercase tracking-tightest leading-[0.9] mb-3 md:mb-6 whitespace-pre-line">
+                  {content.hero_title || 'Your Productivity Partner'}
+                </h1>
+
+                <p className="mt-2 md:mt-8 text-white text-[10px] md:text-xl max-w-xl md:max-w-2xl leading-tight md:leading-relaxed font-medium mb-4 md:mb-12 whitespace-pre-line">
+                  {content.hero_subtitle || 'A trusted partner to the construction industry — pioneers of structural detailing, engineering, design and research, delivering complex, time-sensitive projects worldwide.'}
+                </p>
+
+                <div className="flex flex-wrap justify-start gap-2 md:gap-6 pt-2">
+                  <Link to="/contact" className="inline-flex items-center gap-2 md:gap-3 bg-brand-red text-white px-4 md:px-10 py-2 md:py-5 font-display font-black uppercase tracking-widest hover:bg-white hover:text-navy transition-all shadow-2xl active:scale-95 text-[10px] md:text-base">
+                    Get a Quote <ArrowRight className="h-3 w-3 md:h-5 md:h-5" />
+                  </Link>
+                  <Link to="/services" className="inline-flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-md text-white border border-white/20 px-4 md:px-10 py-2 md:py-5 font-display font-black uppercase tracking-widest hover:bg-white hover:text-navy transition-all shadow-2xl active:scale-95 text-[10px] md:text-base">
+                    Our Services
+                  </Link>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0 w-0 border-l-[28px] border-r-[28px] border-t-[22px] border-l-transparent border-r-transparent border-t-background z-20" />
