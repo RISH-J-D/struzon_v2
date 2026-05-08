@@ -23,7 +23,7 @@ function Services() {
   return (
     <PageShell>
       <section className="relative overflow-hidden pt-24 pb-12 md:pt-48 md:pb-24 lg:pt-56">
-        <div className="absolute inset-0 bg-cover bg-center transition-transform hover:scale-105 duration-[30s]" style={{ backgroundImage: `url(${heroBgImage})` }} />
+        <div className="absolute inset-0 bg-cover bg-[75%_center] scale-110 transition-transform hover:scale-115 duration-[30s]" style={{ backgroundImage: `url(${heroBgImage})` }} />
         <div className="absolute inset-0" style={{ backgroundColor: 'rgba(43, 65, 95, 0.64)' }} />
         <div className="relative mx-auto max-w-7xl px-8 w-full flex flex-col items-start text-left">
           <h1 className="mt-3 text-white text-3xl sm:text-4xl md:text-6xl font-display font-black uppercase tracking-tighter leading-[0.85] drop-shadow-2xl whitespace-pre-line">
@@ -42,7 +42,7 @@ function Services() {
       </section>
 
       <section className="py-20 md:py-32 bg-navy text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-5" style={{ backgroundImage: `url(${heroBgImage})` }} />
+        <div className="absolute inset-0 bg-cover bg-[75%_center] opacity-5 scale-110" style={{ backgroundImage: `url(${heroBgImage})` }} />
         <div className="relative mx-auto max-w-4xl px-8 text-center z-10">
           <div className="text-xs sm:text-sm uppercase tracking-[0.3em] text-brand-red font-black mb-6">Contact Us</div>
           <h2 className="text-white text-[clamp(1.5rem,6vw,4rem)] font-display font-black uppercase tracking-tighter leading-[1.1] mb-8">

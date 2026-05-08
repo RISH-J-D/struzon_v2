@@ -25,7 +25,7 @@ export function PageHero({ eyebrow, title, subtitle }: { eyebrow?: string; title
     <section className="relative overflow-hidden">
       {/* Background image */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-[75%_center] scale-110"
         style={{ backgroundImage: `url(${heroBgImage})` }}
       />
 

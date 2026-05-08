@@ -204,7 +204,7 @@ function TeamPage() {
         </div>
       </section>
       <motion.section layout className="relative bg-navy text-white py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-10 grayscale" style={{ backgroundImage: `url(${globalBgImage})` }} />
+        <div className="absolute inset-0 bg-cover bg-[75%_center] opacity-10 grayscale scale-110" style={{ backgroundImage: `url(${globalBgImage})` }} />
         <div className="relative mx-auto max-w-4xl px-8 text-center z-10">
           <h2 className="text-white text-[clamp(1.5rem,6vw,4rem)] font-display font-black uppercase tracking-tighter leading-[1.1] mb-8">
             {content.team_cta_title || 'Want to work with our experts?'}

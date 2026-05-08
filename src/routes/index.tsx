@@ -220,7 +220,7 @@ function Home() {
       </section>
 
       <section className="relative bg-navy text-white py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 grayscale bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${globalBgImage})` }} />
+        <div className="absolute inset-0 opacity-10 grayscale bg-cover bg-[75%_center] bg-no-repeat scale-110" style={{ backgroundImage: `url(${globalBgImage})` }} />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <div className="text-xs uppercase tracking-[0.4em] text-brand-red font-black mb-6">Ready to Build?</div>
           <h2 className="text-white text-[clamp(1.5rem,6vw,4rem)] font-display font-black uppercase tracking-tighter leading-[1.1] mb-8 whitespace-pre-line">

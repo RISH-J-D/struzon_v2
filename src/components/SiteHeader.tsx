@@ -81,23 +81,23 @@ export function SiteHeader() {
               className="w-full bg-white border-b border-navy/5 overflow-hidden"
             >
               <div className="w-full min-h-[50px] flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-2 md:py-0 text-[11px] sm:text-[13px] md:text-[14px] font-bold uppercase tracking-wider text-navy gap-3 md:gap-0">
-                <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6 md:gap-10 items-center">
-                  <a href="mailto:info@struzon.com" className="flex items-center gap-2 sm:gap-3 hover:text-brand-red transition-colors group">
+                <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 md:gap-3 items-center">
+                  <a href="mailto:info@struzon.com" className="flex items-center gap-0.5 sm:gap-1 hover:text-brand-red transition-colors group">
                     <Mail size={14} className="text-brand-red md:w-4 md:h-4" />
                     <span>info@struzon.com</span>
                   </a>
                   <div className="hidden sm:block w-px h-4 bg-navy/10" />
-                  <a href="tel:+16469923825" className="flex items-center gap-2 sm:gap-3 hover:text-brand-red transition-colors group">
+                  <a href="tel:+16469923825" className="flex items-center gap-0.5 sm:gap-1 hover:text-brand-red transition-colors group">
                     <Phone size={14} className="text-brand-red md:w-4 md:h-4" />
                     <span className="whitespace-nowrap">+1 (646) 992-3825</span>
                   </a>
                   <div className="hidden lg:block w-px h-4 bg-navy/10" />
-                  <a href="tel:+916385828777" className="flex items-center gap-2 sm:gap-3 hover:text-brand-red transition-colors group">
+                  <a href="tel:+916385828777" className="flex items-center gap-0.5 sm:gap-1 hover:text-brand-red transition-colors group">
                     <Phone size={14} className="text-brand-red md:w-4 md:h-4" />
                     <span className="whitespace-nowrap">+91 6385828777</span>
                   </a>
                 </div>
-                <div className="flex gap-6 sm:gap-8 items-center">
+                <div className="flex gap-4 sm:gap-5 items-center">
                   <a href="https://www.facebook.com/people/Struzon-Technologies/100057060415643/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaFacebookF size={16} /></a>
                   <a href="https://www.linkedin.com/company/struzon-technologies/" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaLinkedinIn size={16} /></a>
                   <a href="https://www.instagram.com/struzontechnologies?igsh=MWp0c2w1emdkbjQ3Mw==" target="_blank" rel="noopener noreferrer" className="text-navy/40 hover:text-brand-red transition-colors"><FaInstagram size={16} /></a>
@@ -114,7 +114,7 @@ export function SiteHeader() {
           className="flex-1 w-full flex items-center justify-between px-2 lg:px-12 gap-2 lg:gap-4"
         >
           {/* Logo & Certifications */}
-          <div className="flex items-center justify-start gap-1 lg:gap-3 xl:gap-8 min-w-0 shrink-0">
+          <div className="flex items-center justify-start gap-1 lg:gap-1 xl:gap-2 min-w-0 shrink-0">
             <Link to="/" className="shrink-0">
               <motion.img
                 style={{ scale: logoScale }}
@@ -123,7 +123,7 @@ export function SiteHeader() {
                 className="h-6 sm:h-8 md:h-10 lg:h-11 xl:h-16 w-auto object-contain"
               />
             </Link>
-            <div className="flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-12 border-l border-navy/10 pl-3 sm:pl-5 md:pl-6 lg:pl-8 xl:pl-10 py-1 md:py-2 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 xl:gap-4 border-l border-navy/10 pl-1 sm:pl-1.5 md:pl-2 lg:pl-3 xl:pl-4 py-1 md:py-2 shrink-0">
               <motion.img whileHover={{ y: -5 }} src={badge1} className="h-5 sm:h-7 md:h-9 lg:h-10 xl:h-[72px] w-auto transition-all cursor-pointer" title="AISC" />
               <motion.img whileHover={{ y: -5 }} src={badge2} className="h-5 sm:h-7 md:h-9 lg:h-10 xl:h-[72px] w-auto transition-all cursor-pointer" title="NISD" />
               <motion.img whileHover={{ y: -5 }} src={badge3} className="h-4 sm:h-6 md:h-8 lg:h-9 xl:h-16 w-auto transition-all cursor-pointer" title="ISO" />
